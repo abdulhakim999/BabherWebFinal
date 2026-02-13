@@ -32,3 +32,14 @@ export interface StatItem {
   count: number;
   icon: React.ReactNode;
 }
+
+export interface Course {
+  title: string;
+  description?: string;
+  videoUrl?: string;
+  tag?: string;
+  date?: string;
+  image?: {
+    url: string;
+  };
+}

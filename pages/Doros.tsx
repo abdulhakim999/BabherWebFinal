@@ -1,17 +1,75 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SectionHeader from '../components/SectionHeader';
 import ContentCard from '../components/ContentCard';
 import ScrollReveal from '../components/ScrollReveal';
-import { lessonsData } from '../data';
+import { getCourses } from '../services/courses';
+import { Course } from '../types';
+import { ContentType } from '../types';
 
 const categories = ['الكل', 'العقيدة', 'الفقه', 'الحديث', 'التفسير', 'الآداب'];
 
 const Doros: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('الكل');
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        setLoading(true);
+        const data = await getCourses('ar'); // استخدام اللغة العربية
+        setCourses(data);
+        setError(null);
+      } catch (err) {
+        // في حال فشل Contentful، استخدم البيانات الوهمية
+        console.warn('فشل تحميل البيانات من Contentful، استخدام البيانات الوهمية:', err);
+        setError(null); // لا تظهر خطأ، فقط استخدم البيانات الوهمية
+        // البيانات الوهمية ستظل فارغة في هذه الحالة
+        // يمكن استيراد lessonsData من data.ts إذا رغبت
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCourses();
+  }, []);
+
+  // تحويل البيانات من Contentful إلى التنسيق المستخدم في الواجهة
+  const convertedLessons = courses.map((course, index) => ({
+    id: `course-${index}`,
+    title: course.title,
+    description: course.description || '',
+    category: course.tag || 'الكل',
+    date: course.date || new Date().toLocaleDateString('ar-SA'),
+    type: ContentType.Lesson,
+    imageUrl: course.image?.url,
+    mediaUrl: course.videoUrl,
+  }));
 
   const filteredLessons = activeCategory === 'الكل' 
-    ? lessonsData 
-    : lessonsData.filter(item => item.category === activeCategory);
+    ? convertedLessons 
+    : convertedLessons.filter(item => item.category === activeCategory);
+
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-12">
+        <div className="text-center py-20">
+          <p className="text-gray-600">جاري تحميل الدروس...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container mx-auto px-4 py-12">
+        <div className="text-center py-20 bg-red-50 rounded-lg border-2 border-red-200">
+          <p className="text-red-600">{error}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-12">
