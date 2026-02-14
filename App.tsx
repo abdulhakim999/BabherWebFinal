@@ -13,6 +13,7 @@ import News from './pages/News';
 import Contact from './pages/Contact';
 import Favorites from './pages/Favorites';
 import ContentDetails from './pages/ContentDetails';
+import NotFound from './pages/NotFound';
 import { FavoritesProvider } from './context/FavoritesContext';
 import { AudioProvider } from './context/AudioContext';
 import { ThemeProvider } from './context/ThemeContext';
@@ -48,6 +49,7 @@ const App: React.FC = () => {
                 <Route path="/favorites" element={<Favorites />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/content/:id" element={<ContentDetails />} />
+                <Route path="*" element={<NotFound />} />
               </Routes>
               <AudioPlayer />
             </Layout>

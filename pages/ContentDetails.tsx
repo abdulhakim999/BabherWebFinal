@@ -265,8 +265,8 @@ const ContentDetails: React.FC = () => {
           {/* Author Card */}
           <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
              <div className="flex items-center gap-4 mb-4">
-               <div className="w-16 h-16 rounded-full bg-gray-200 overflow-hidden">
-                 <img src="https://picsum.photos/seed/sheikh/100/100" alt="الشيخ" className="w-full h-full object-cover" />
+               <div className="w-16 h-16 rounded-full bg-amber-600 flex items-center justify-center">
+                 <BookOpen size={28} className="text-white" />
                </div>
                <div>
                  <h3 className="font-bold text-gray-900 dark:text-white">الشيخ محمد بن صالح بابحر</h3>

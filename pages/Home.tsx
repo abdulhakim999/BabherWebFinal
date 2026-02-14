@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Mic, Book, Video, FileText, PenTool, Radio } from 'lucide-react';
+import { Mic, Book, Video, PenTool, Radio, BookOpen } from 'lucide-react';
 import SectionHeader from '../components/SectionHeader';
 import ContentCard from '../components/ContentCard';
 import ScrollReveal from '../components/ScrollReveal';
@@ -47,19 +47,12 @@ const Home: React.FC = () => {
       <section className="relative text-white py-24 md:py-32 overflow-hidden">
         {/* Professional Background Layer */}
         <div className="absolute inset-0 z-0">
-          {/* Main Image: Lantern and Quran theme */}
-          <img 
-            src="https://images.unsplash.com/photo-1584663639452-192776360cd3?q=80&w=2070&auto=format&fit=crop" 
-            alt="Islamic Background" 
-            className="w-full h-full object-cover object-center animate-scale-in"
-            style={{ animationDuration: '10s', animationFillMode: 'forwards' }}
-          />
-          {/* Dark Overlay for readability */}
-          <div className="absolute inset-0 bg-gray-900/85 mix-blend-multiply"></div>
-          {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-90"></div>
-          {/* Pattern Texture Overlay */}
-          <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')]"></div>
+          {/* Elegant gradient background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-amber-900"></div>
+          {/* Decorative geometric pattern */}
+          <div className="absolute inset-0 opacity-5 bg-[url('https://www.transparenttextures.com/patterns/arabesque.png')]"></div>
+          {/* Radial glow */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-amber-600/20 rounded-full blur-3xl"></div>
         </div>
 
         <div className="container mx-auto px-4 relative z-10 text-center">
@@ -129,12 +122,22 @@ const Home: React.FC = () => {
             <div className="w-full md:w-1/3">
               <ScrollReveal animation="scale-in">
                 <div className="relative">
-                  <div className="absolute inset-0 bg-amber-600 rounded-lg transform translate-x-3 translate-y-3"></div>
-                  <img 
-                    src="https://picsum.photos/seed/sheikh/600/800" 
-                    alt="صورة الشيخ" 
-                    className="rounded-lg shadow-lg w-full object-cover h-96 relative z-10"
-                  />
+                  <div className="absolute inset-0 bg-amber-600 rounded-2xl transform translate-x-3 translate-y-3"></div>
+                  <div className="relative z-10 bg-gradient-to-br from-amber-50 to-amber-100 dark:from-gray-800 dark:to-gray-700 rounded-2xl shadow-lg h-96 flex flex-col items-center justify-center p-8">
+                    <div className="w-28 h-28 bg-amber-600 rounded-full flex items-center justify-center mb-6 shadow-xl">
+                      <BookOpen size={56} className="text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold font-traditional text-gray-900 dark:text-white text-center mb-2">الشيخ محمد بابحر</h3>
+                    <p className="text-amber-700 dark:text-amber-400 font-medium text-center">رحمه الله تعالى</p>
+                    <div className="mt-4 flex gap-3">
+                      <a href="https://youtube.com/channel/UCNtUH-AiA3_C3_dBC2MUFTQ" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white dark:bg-gray-600 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-200 hover:text-red-500 hover:shadow-md transition-all" title="يوتيوب">
+                        <Video size={18} />
+                      </a>
+                      <a href="https://www.facebook.com/mbabher" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white dark:bg-gray-600 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-200 hover:text-blue-500 hover:shadow-md transition-all" title="فيسبوك">
+                        <BookOpen size={18} />
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </ScrollReveal>
             </div>

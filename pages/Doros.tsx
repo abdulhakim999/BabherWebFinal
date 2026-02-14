@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import SectionHeader from '../components/SectionHeader';
 import ContentCard from '../components/ContentCard';
 import ScrollReveal from '../components/ScrollReveal';
+import { SkeletonGrid } from '../components/SkeletonCard';
 import { getCourses } from '../services/courses';
 import { Course } from '../types';
 import { ContentType } from '../types';
@@ -56,9 +57,11 @@ const Doros: React.FC = () => {
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-12">
-        <div className="text-center py-20">
-          <p className="text-gray-600">جاري تحميل الدروس...</p>
-        </div>
+        <SectionHeader 
+          title="مكتبة الدروس" 
+          subtitle="سلاسل علمية منهجية وشروح للمتون في مختلف الفنون الشرعية" 
+        />
+        <SkeletonGrid count={8} />
       </div>
     );
   }

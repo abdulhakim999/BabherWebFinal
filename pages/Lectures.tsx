@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import SectionHeader from '../components/SectionHeader';
 import ContentCard from '../components/ContentCard';
 import ScrollReveal from '../components/ScrollReveal';
+import { SkeletonGrid } from '../components/SkeletonCard';
 import { getLectures } from '../services/lectures';
 import { Lecture } from '../services/lectures';
 import { ContentType } from '../types';
@@ -49,9 +50,11 @@ const Lectures: React.FC = () => {
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-12">
-        <div className="text-center py-20">
-          <p className="text-gray-600">جاري تحميل المحاضرات...</p>
-        </div>
+        <SectionHeader 
+          title="مكتبة المحاضرات" 
+          subtitle="محاضرات عامة وندوات موسمية تناقش قضايا المجتمع" 
+        />
+        <SkeletonGrid count={8} />
       </div>
     );
   }
