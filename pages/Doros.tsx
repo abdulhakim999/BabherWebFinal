@@ -37,7 +37,7 @@ const Doros: React.FC = () => {
 
   // تحويل البيانات من Contentful إلى التنسيق المستخدم في الواجهة
   const convertedLessons = courses.map((course, index) => ({
-    id: `course-${index}`,
+    id: course.sys?.id || `course-${index}`,
     title: course.title,
     description: course.description || '',
     category: course.tag || 'الكل',

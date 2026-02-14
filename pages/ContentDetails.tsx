@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Calendar, Tag, ArrowLeft, Download, Share2, Play, Eye, BookOpen, Clock, Heart } from 'lucide-react';
 import { getItemById, allContent } from '../data';
-import { ContentItem } from '../types';
+import { getCourseById } from '../services/courses';
+import { ContentItem, ContentType } from '../types';
 import SectionHeader from '../components/SectionHeader';
 import ContentCard from '../components/ContentCard';
 import BookPreviewModal from '../components/BookPreviewModal';
@@ -41,23 +42,63 @@ const ContentDetails: React.FC = () => {
   const [item, setItem] = useState<ContentItem | undefined>(undefined);
   const [relatedItems, setRelatedItems] = useState<ContentItem[]>([]);
   const [showPreview, setShowPreview] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { playTrack, currentTrack, isPlaying, togglePlay } = useAudio();
   const { isFavorite, toggleFavorite } = useFavorites();
 
   useEffect(() => {
-    if (id) {
+    const fetchContent = async () => {
+      if (!id) return;
+      setLoading(true);
+
+      // First try local data
       const foundItem = getItemById(id);
-      setItem(foundItem);
-      // Find related items (same category, excluding current)
       if (foundItem) {
+        setItem(foundItem);
         const related = allContent
           .filter(c => c.category === foundItem.category && c.id !== foundItem.id)
           .slice(0, 3);
         setRelatedItems(related);
+        setLoading(false);
+        window.scrollTo(0, 0);
+        return;
       }
+
+      // If not found locally, try Contentful (course)
+      try {
+        const course = await getCourseById(id, 'ar');
+        if (course) {
+          const contentItem: ContentItem = {
+            id: course.sys?.id || id,
+            title: course.title,
+            description: course.description || '',
+            category: course.tag || 'الكل',
+            date: course.date || new Date().toLocaleDateString('ar-SA'),
+            type: ContentType.Lesson,
+            imageUrl: course.image?.url,
+            mediaUrl: course.videoUrl,
+          };
+          setItem(contentItem);
+          setRelatedItems([]);
+        }
+      } catch (err) {
+        console.error('Error fetching content from Contentful:', err);
+      }
+
+      setLoading(false);
       window.scrollTo(0, 0);
-    }
+    };
+
+    fetchContent();
   }, [id]);
+
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-20 text-center dark:text-gray-200">
+        <p className="text-gray-600">جاري تحميل المحتوى...</p>
+      </div>
+    );
+  }
 
   if (!item) {
     return (
