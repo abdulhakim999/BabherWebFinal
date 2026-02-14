@@ -8,7 +8,8 @@ import { SkeletonGrid } from '../components/SkeletonCard';
 import { getContentStats, ContentStats } from '../services/stats';
 import { getCourses } from '../services/courses';
 import { getLectures } from '../services/lectures';
-import { ContentItem, ContentType } from '../types';
+import { ContentItem } from '../types';
+import { courseToContentItem, lectureToContentItem } from '../utils/contentMapper';
 import usePageTitle from '../hooks/usePageTitle';
 
 const StatCard = ({ label, count, icon, delay }: { label: string, count: number, icon: React.ReactNode, delay: number }) => (
@@ -50,28 +51,10 @@ const Home: React.FC = () => {
       ]);
       setStats(statsData);
 
-      // Convert and merge
+      // Convert and merge using shared utility
       const allItems: ContentItem[] = [
-        ...courses.map((c, i) => ({
-          id: c.sys?.id || `course-${i}`,
-          title: c.title,
-          description: c.description || '',
-          category: c.tag?.trim() || 'غير مصنف',
-          date: c.date || '',
-          type: ContentType.Lesson,
-          imageUrl: c.image?.url,
-          mediaUrl: c.videoUrl,
-        })),
-        ...lectures.map((l, i) => ({
-          id: l.sys?.id || `lecture-${i}`,
-          title: l.title,
-          description: l.description || '',
-          category: l.tag?.trim() || 'غير مصنف',
-          date: l.date || '',
-          type: ContentType.Lecture,
-          imageUrl: l.image?.url,
-          mediaUrl: l.videoUrl,
-        })),
+        ...courses.map(courseToContentItem),
+        ...lectures.map(lectureToContentItem),
       ];
 
       // Sort by date (newest first) and take 6
@@ -109,10 +92,10 @@ const Home: React.FC = () => {
           
           <ScrollReveal animation="slide-up" delay={400}>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <a href="#/doros" className="bg-amber-600 hover:bg-amber-700 text-white px-8 py-4 rounded-lg font-bold text-lg transition-all hover:shadow-lg hover:shadow-amber-900/50 transform hover:-translate-y-1">
+              <a href="/doros" className="bg-amber-600 hover:bg-amber-700 text-white px-8 py-4 rounded-lg font-bold text-lg transition-all hover:shadow-lg hover:shadow-amber-900/50 transform hover:-translate-y-1">
                 تصفح الدروس
               </a>
-              <a href="#/contact" className="bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-lg font-bold text-lg transition-colors backdrop-blur-sm border border-white/20 hover:border-white/40">
+              <a href="/contact" className="bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-lg font-bold text-lg transition-colors backdrop-blur-sm border border-white/20 hover:border-white/40">
                 تواصل معنا
               </a>
             </div>
@@ -152,7 +135,7 @@ const Home: React.FC = () => {
         
         <ScrollReveal delay={300} animation="fade-in">
           <div className="text-center mt-10">
-            <a href="#/doros" className="inline-flex items-center text-amber-700 dark:text-amber-500 font-medium hover:text-amber-800 dark:hover:text-amber-400 group transition-colors">
+            <a href="/doros" className="inline-flex items-center text-amber-700 dark:text-amber-500 font-medium hover:text-amber-800 dark:hover:text-amber-400 group transition-colors">
                عرض المزيد من المواد 
                <span className="mr-2 transform group-hover:-translate-x-1 transition-transform">←</span>
             </a>
@@ -192,7 +175,7 @@ const Home: React.FC = () => {
                 <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-6">
                   هذا الموقع يهتم بنشر الميراث العلمي للشيخ أبي إبراهيم محمد بن صالح بابحر رحمه الله، من خطب ودروس ومحاضرات وخواطر وفوائد وفتاوى وكتب وغير ذلك.
                 </p>
-                <a href="#/cv" className="text-amber-700 dark:text-amber-500 font-bold border-b-2 border-amber-600 hover:text-amber-800 dark:hover:text-amber-400 pb-1 inline-block hover:border-amber-800 transition-colors">
+                <a href="/cv" className="text-amber-700 dark:text-amber-500 font-bold border-b-2 border-amber-600 hover:text-amber-800 dark:hover:text-amber-400 pb-1 inline-block hover:border-amber-800 transition-colors">
                   اقرأ السيرة الذاتية
                 </a>
               </ScrollReveal>

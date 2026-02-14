@@ -1,6 +1,7 @@
 import React from 'react';
 import SectionHeader from '../components/SectionHeader';
-import { articlesData } from '../data';
+import { Construction } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import usePageTitle from '../hooks/usePageTitle';
 
 const Articles: React.FC = () => {
@@ -11,33 +12,18 @@ const Articles: React.FC = () => {
         title="مكتبة المقالات" 
         subtitle="أبحاث ومقالات علمية في النوازل والقضايا المعاصرة" 
       />
-      
-      {articlesData.length > 0 ? (
-        <div className="space-y-6 max-w-4xl mx-auto">
-          {articlesData.map(item => (
-            <div key={item.id} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border-r-4 border-amber-500 hover:shadow-lg hover:-translate-y-1 hover:translate-x-1 transition-all duration-300 ease-out group cursor-pointer">
-              <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-2 gap-4">
-                 <span>{item.date}</span>
-                 <span className="bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded text-xs">{item.category}</span>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-amber-600 dark:group-hover:text-amber-500 transition-colors">
-                {item.title}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-                {item.description}
-              </p>
-              <a href="#" className="text-amber-600 dark:text-amber-500 text-sm font-medium hover:underline flex items-center">
-                اقرأ المقال كاملاً
-                <span className="mr-1 transform group-hover:-translate-x-1 transition-transform">←</span>
-              </a>
-            </div>
-          ))}
+      <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 text-center">
+        <div className="bg-amber-100 dark:bg-amber-900/20 p-4 rounded-full mb-4">
+          <Construction size={40} className="text-amber-600" />
         </div>
-      ) : (
-        <div className="text-center py-20 bg-gray-50 dark:bg-gray-900 rounded-lg">
-          <p className="text-gray-500 dark:text-gray-400 text-lg">هذا القسم قيد التحديث.</p>
-        </div>
-      )}
+        <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">قيد التطوير</h3>
+        <p className="text-gray-500 dark:text-gray-400 mb-6 max-w-md">
+          يتم حالياً إعداد هذا القسم وربطه بالمحتوى الفعلي. ترقبوا التحديث قريباً إن شاء الله.
+        </p>
+        <Link to="/" className="bg-amber-600 text-white px-6 py-2 rounded-lg hover:bg-amber-700 transition-colors font-bold">
+          العودة للرئيسية
+        </Link>
+      </div>
     </div>
   );
 };

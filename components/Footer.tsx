@@ -1,5 +1,6 @@
 import React from 'react';
 import { Mail, Phone, MapPin, Facebook, Youtube, BookOpen } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
   return (
@@ -19,9 +20,10 @@ const Footer: React.FC = () => {
           <div>
             <h3 className="text-xl font-bold mb-4 font-traditional text-amber-500">روابط سريعة</h3>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li><a href="#/doros" className="hover:text-amber-400 transition-colors">مكتبة الدروس</a></li>
-              <li><a href="#/lectures" className="hover:text-amber-400 transition-colors">المحاضرات</a></li>
-              <li><a href="#/contact" className="hover:text-amber-400 transition-colors">تواصل معنا</a></li>
+              <li><Link to="/doros" className="hover:text-amber-400 transition-colors">مكتبة الدروس</Link></li>
+              <li><Link to="/lectures" className="hover:text-amber-400 transition-colors">المحاضرات</Link></li>
+              <li><Link to="/cv" className="hover:text-amber-400 transition-colors">السيرة الذاتية</Link></li>
+              <li><Link to="/contact" className="hover:text-amber-400 transition-colors">تواصل معنا</Link></li>
             </ul>
           </div>
 
@@ -30,23 +32,15 @@ const Footer: React.FC = () => {
             <h3 className="text-xl font-bold mb-4 font-traditional text-amber-500">تواصل معنا</h3>
             <div className="space-y-3 text-sm text-gray-400">
               <div className="flex items-center space-x-3 space-x-reverse">
-                <Mail size={16} className="text-amber-500" />
-                <span>info@scholar-site.com</span>
-              </div>
-              <div className="flex items-center space-x-3 space-x-reverse">
-                <Phone size={16} className="text-amber-500" />
-                <span>+966 50 000 0000</span>
-              </div>
-              <div className="flex items-center space-x-3 space-x-reverse">
-                <MapPin size={16} className="text-amber-500" />
-                <span>الرياض، المملكة العربية السعودية</span>
+                <MapPin size={16} className="text-amber-500 flex-shrink-0" />
+                <span>سيئون، حضرموت، اليمن</span>
               </div>
             </div>
             
             <div className="mt-6 flex space-x-4 space-x-reverse">
-              <a href="https://youtube.com/channel/UCNtUH-AiA3_C3_dBC2MUFTQ" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-red-500 transition-colors" title="قناة اليوتيوب"><Youtube size={20} /></a>
-              <a href="https://www.facebook.com/mbabher" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-500 transition-colors" title="فيسبوك"><Facebook size={20} /></a>
-              <a href="http://babhar.blogspot.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-amber-400 transition-colors" title="المدونة"><BookOpen size={20} /></a>
+              <a href="https://youtube.com/channel/UCNtUH-AiA3_C3_dBC2MUFTQ" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-red-500 transition-colors" aria-label="قناة اليوتيوب" title="قناة اليوتيوب"><Youtube size={20} /></a>
+              <a href="https://www.facebook.com/mbabher" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-500 transition-colors" aria-label="فيسبوك" title="فيسبوك"><Facebook size={20} /></a>
+              <a href="http://babhar.blogspot.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-amber-400 transition-colors" aria-label="المدونة" title="المدونة"><BookOpen size={20} /></a>
             </div>
           </div>
         </div>

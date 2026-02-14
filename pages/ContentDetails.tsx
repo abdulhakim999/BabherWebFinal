@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Calendar, Tag, ArrowLeft, Download, Share2, Play, Eye, BookOpen, Clock, Heart } from 'lucide-react';
-import { getItemById, allContent } from '../data';
 import { getCourseById } from '../services/courses';
 import { getLectureById } from '../services/lectures';
 import { ContentItem, ContentType } from '../types';
@@ -55,20 +54,7 @@ const ContentDetails: React.FC = () => {
       if (!id) return;
       setLoading(true);
 
-      // First try local data
-      const foundItem = getItemById(id);
-      if (foundItem) {
-        setItem(foundItem);
-        const related = allContent
-          .filter(c => c.category === foundItem.category && c.id !== foundItem.id)
-          .slice(0, 3);
-        setRelatedItems(related);
-        setLoading(false);
-        window.scrollTo(0, 0);
-        return;
-      }
-
-      // If not found locally, try Contentful (course)
+      // Try Contentful first (course)
       try {
         const course = await getCourseById(id, 'ar');
         if (course) {
@@ -108,11 +94,16 @@ const ContentDetails: React.FC = () => {
           };
           setItem(contentItem);
           setRelatedItems([]);
+          setLoading(false);
+          window.scrollTo(0, 0);
+          return;
         }
       } catch (err) {
         console.error('Error fetching lecture from Contentful:', err);
       }
 
+      // Content not found
+      setItem(undefined);
       setLoading(false);
       window.scrollTo(0, 0);
     };

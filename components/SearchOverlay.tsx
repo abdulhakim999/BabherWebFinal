@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Search, X, ArrowLeft, Book, Mic, Video, FileText, Loader2 } from 'lucide-react';
-import { ContentItem, ContentType } from '../types';
+import { ContentItem } from '../types';
 import { Link } from 'react-router-dom';
 import { getCourses } from '../services/courses';
 import { getLectures } from '../services/lectures';
+import { courseToContentItem, lectureToContentItem } from '../utils/contentMapper';
 
 interface SearchOverlayProps {
   isOpen: boolean;
@@ -34,26 +35,8 @@ const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose }) => {
       ]);
 
       const items: ContentItem[] = [
-        ...courses.map((c, i) => ({
-          id: c.sys?.id || `course-${i}`,
-          title: c.title,
-          description: c.description || '',
-          category: c.tag?.trim() || 'غير مصنف',
-          date: c.date || '',
-          type: ContentType.Lesson,
-          imageUrl: c.image?.url,
-          mediaUrl: c.videoUrl,
-        })),
-        ...lectures.map((l, i) => ({
-          id: l.sys?.id || `lecture-${i}`,
-          title: l.title,
-          description: l.description || '',
-          category: l.tag?.trim() || 'غير مصنف',
-          date: l.date || '',
-          type: ContentType.Lecture,
-          imageUrl: l.image?.url,
-          mediaUrl: l.videoUrl,
-        })),
+        ...courses.map(courseToContentItem),
+        ...lectures.map(lectureToContentItem),
       ];
 
       cachedContent = items;

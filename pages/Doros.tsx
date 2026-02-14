@@ -8,6 +8,7 @@ import { getCourses } from '../services/courses';
 import { Course } from '../types';
 import { ContentType } from '../types';
 import usePageTitle from '../hooks/usePageTitle';
+import { courseToContentItem } from '../utils/contentMapper';
 
 
 const ITEMS_PER_PAGE = 12;
@@ -42,16 +43,8 @@ const Doros: React.FC = () => {
   }, []);
 
   // تحويل البيانات من Contentful إلى التنسيق المستخدم في الواجهة
-  const convertedLessons = courses.map((course, index) => ({
-    id: course.sys?.id || `course-${index}`,
-    title: course.title,
-    description: course.description || '',
-    category: course.tag?.trim() || 'غير مصنف',
-    date: course.date || new Date().toLocaleDateString('ar-SA'),
-    type: ContentType.Lesson,
-    imageUrl: course.image?.url,
-    mediaUrl: course.videoUrl,
-  }));
+  // تحويل البيانات من Contentful إلى التنسيق المستخدم في الواجهة
+  const convertedLessons = courses.map(courseToContentItem);
 
   const dynamicCategories = convertedLessons.reduce<string[]>((acc, l) => {
     if (l.category && !acc.includes(l.category)) acc.push(l.category);

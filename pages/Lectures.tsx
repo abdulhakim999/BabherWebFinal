@@ -8,6 +8,7 @@ import { getLectures } from '../services/lectures';
 import { Lecture } from '../services/lectures';
 import { ContentType } from '../types';
 import usePageTitle from '../hooks/usePageTitle';
+import { lectureToContentItem } from '../utils/contentMapper';
 
 
 const ITEMS_PER_PAGE = 12;
@@ -35,16 +36,7 @@ const Lectures: React.FC = () => {
     fetchLectures();
   }, []);
 
-  const convertedLectures = lectures.map((lecture, index) => ({
-    id: lecture.sys?.id || `lecture-${index}`,
-    title: lecture.title,
-    description: lecture.description || '',
-    category: lecture.tag?.trim() || 'غير مصنف',
-    date: lecture.date || new Date().toLocaleDateString('ar-SA'),
-    type: ContentType.Lecture,
-    imageUrl: lecture.image?.url,
-    mediaUrl: lecture.videoUrl,
-  }));
+  const convertedLectures = lectures.map(lectureToContentItem);
 
   const dynamicCategories = convertedLectures.reduce<string[]>((acc, l) => {
     if (l.category && !acc.includes(l.category)) acc.push(l.category);

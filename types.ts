@@ -25,6 +25,7 @@ export interface ContentItem {
   imageUrl?: string;
   downloadUrl?: string;
   mediaUrl?: string;
+  videoUrl?: string;
 }
 
 export interface StatItem {

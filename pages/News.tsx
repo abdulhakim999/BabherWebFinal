@@ -1,6 +1,7 @@
 import React from 'react';
 import SectionHeader from '../components/SectionHeader';
-import { newsData } from '../data';
+import { Construction } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import usePageTitle from '../hooks/usePageTitle';
 
 const News: React.FC = () => {
@@ -11,20 +12,17 @@ const News: React.FC = () => {
         title="الأخبار والإعلانات" 
         subtitle="تابع أحدث الفعاليات والمناشط العلمية" 
       />
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {newsData.map(item => (
-          <div key={item.id} className="flex bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-lg hover:-translate-y-1 hover:scale-[1.01] transition-all duration-300 ease-out cursor-pointer group">
-             <div className="w-1/3 bg-gray-200 dark:bg-gray-700 overflow-hidden">
-               <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" />
-             </div>
-             <div className="w-2/3 p-5 flex flex-col justify-center">
-               <div className="text-xs text-amber-600 dark:text-amber-500 font-bold mb-1">{item.date}</div>
-               <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">{item.title}</h3>
-               <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">{item.description}</p>
-             </div>
-          </div>
-        ))}
+      <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 text-center">
+        <div className="bg-amber-100 dark:bg-amber-900/20 p-4 rounded-full mb-4">
+          <Construction size={40} className="text-amber-600" />
+        </div>
+        <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">قيد التطوير</h3>
+        <p className="text-gray-500 dark:text-gray-400 mb-6 max-w-md">
+          يتم حالياً إعداد هذا القسم وربطه بالمحتوى الفعلي. ترقبوا التحديث قريباً إن شاء الله.
+        </p>
+        <Link to="/" className="bg-amber-600 text-white px-6 py-2 rounded-lg hover:bg-amber-700 transition-colors font-bold">
+          العودة للرئيسية
+        </Link>
       </div>
     </div>
   );

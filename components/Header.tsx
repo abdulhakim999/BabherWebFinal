@@ -97,6 +97,8 @@ const Header: React.FC = () => {
               <button 
                 onClick={toggleTheme}
                 className="p-2 text-gray-600 dark:text-gray-300 hover:text-amber-600"
+                aria-label={theme === 'light' ? 'الوضع الليلي' : 'الوضع النهاري'}
+                title={theme === 'light' ? 'الوضع الليلي' : 'الوضع النهاري'}
               >
                  {theme === 'light' ? <Moon size={22} /> : <Sun size={22} />}
               </button>
@@ -104,6 +106,8 @@ const Header: React.FC = () => {
               <button 
                 onClick={() => setIsSearchOpen(true)}
                 className="p-2 text-gray-600 dark:text-gray-300 hover:text-amber-600"
+                aria-label="بحث"
+                title="بحث"
               >
                 <Search size={24} />
               </button>

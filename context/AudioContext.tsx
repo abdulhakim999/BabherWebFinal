@@ -53,10 +53,16 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     if (audioRef.current) {
       setCurrentTrack(track);
-      // In a real app, use track.mediaUrl. For demo, we use a sample audio
-      audioRef.current.src = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'; 
-      audioRef.current.play();
-      setIsPlaying(true);
+      // Use the actual media URL from Contentful
+      const mediaUrl = track.mediaUrl || track.videoUrl;
+      if (mediaUrl) {
+        audioRef.current.src = mediaUrl;
+        audioRef.current.play().catch(err => {
+          console.error('Playback failed:', err);
+          setIsPlaying(false);
+        });
+        setIsPlaying(true);
+      }
     }
   };
 
@@ -65,7 +71,10 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       if (isPlaying) {
         audioRef.current.pause();
       } else {
-        audioRef.current.play();
+        audioRef.current.play().catch(err => {
+          console.error('Playback failed:', err);
+          setIsPlaying(false);
+        });
       }
       setIsPlaying(!isPlaying);
     }

@@ -135,11 +135,13 @@ const Contact: React.FC = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">نوع الرسالة</label>
+                  <label htmlFor="message-type" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">نوع الرسالة</label>
                   <select 
+                    id="message-type"
                     name="type"
                     value={formData.type}
                     onChange={handleChange}
+                    title="نوع الرسالة"
                     className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-colors"
                   >
                     <option>استفسار علمي</option>
