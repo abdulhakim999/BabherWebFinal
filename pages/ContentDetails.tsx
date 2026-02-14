@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Calendar, Tag, ArrowLeft, Download, Share2, Play, Eye, BookOpen, Clock, Heart } from 'lucide-react';
 import { getItemById, allContent } from '../data';
 import { getCourseById } from '../services/courses';
+import { getLectureById } from '../services/lectures';
 import { ContentItem, ContentType } from '../types';
 import SectionHeader from '../components/SectionHeader';
 import ContentCard from '../components/ContentCard';
@@ -80,9 +81,33 @@ const ContentDetails: React.FC = () => {
           };
           setItem(contentItem);
           setRelatedItems([]);
+          setLoading(false);
+          window.scrollTo(0, 0);
+          return;
         }
       } catch (err) {
-        console.error('Error fetching content from Contentful:', err);
+        console.error('Error fetching course from Contentful:', err);
+      }
+
+      // Try Contentful (lecture)
+      try {
+        const lecture = await getLectureById(id, 'ar');
+        if (lecture) {
+          const contentItem: ContentItem = {
+            id: lecture.sys?.id || id,
+            title: lecture.title,
+            description: lecture.description || '',
+            category: lecture.tag || 'الكل',
+            date: lecture.date || new Date().toLocaleDateString('ar-SA'),
+            type: ContentType.Lecture,
+            imageUrl: lecture.image?.url,
+            mediaUrl: lecture.videoUrl,
+          };
+          setItem(contentItem);
+          setRelatedItems([]);
+        }
+      } catch (err) {
+        console.error('Error fetching lecture from Contentful:', err);
       }
 
       setLoading(false);
