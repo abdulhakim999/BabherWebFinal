@@ -20,8 +20,7 @@ const Footer: React.FC = () => {
             <h3 className="text-xl font-bold mb-4 font-traditional text-amber-500">روابط سريعة</h3>
             <ul className="space-y-2 text-sm text-gray-400">
               <li><a href="#/doros" className="hover:text-amber-400 transition-colors">مكتبة الدروس</a></li>
-              <li><a href="#/books" className="hover:text-amber-400 transition-colors">المؤلفات والكتب</a></li>
-              <li><a href="#/visuals" className="hover:text-amber-400 transition-colors">الفوائد والمقاطع</a></li>
+              <li><a href="#/lectures" className="hover:text-amber-400 transition-colors">المحاضرات</a></li>
               <li><a href="#/contact" className="hover:text-amber-400 transition-colors">تواصل معنا</a></li>
             </ul>
           </div>

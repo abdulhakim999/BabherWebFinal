@@ -9,9 +9,6 @@ const navItems = [
   { label: 'السيرة الذاتية', path: '/cv' },
   { label: 'الدروس', path: '/doros' },
   { label: 'المحاضرات', path: '/lectures' },
-  { label: 'الكتب', path: '/books' },
-  { label: 'الفوائد', path: '/visuals' },
-  { label: 'المقالات', path: '/articles' },
   { label: 'تواصل معنا', path: '/contact' },
 ];
 
