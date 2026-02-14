@@ -1,8 +1,10 @@
 import React from 'react';
 import SectionHeader from '../components/SectionHeader';
 import { articlesData } from '../data';
+import usePageTitle from '../hooks/usePageTitle';
 
 const Articles: React.FC = () => {
+  usePageTitle('مكتبة المقالات');
   return (
     <div className="container mx-auto px-4 py-12">
       <SectionHeader 

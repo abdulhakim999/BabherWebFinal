@@ -2,8 +2,10 @@ import React from 'react';
 import SectionHeader from '../components/SectionHeader';
 import ContentCard from '../components/ContentCard';
 import { speechesData } from '../data';
+import usePageTitle from '../hooks/usePageTitle';
 
 const Speech: React.FC = () => {
+  usePageTitle('مكتبة الخطب');
   return (
     <div className="container mx-auto px-4 py-12">
       <SectionHeader 

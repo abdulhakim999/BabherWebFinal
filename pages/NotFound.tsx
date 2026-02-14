@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Home, ArrowRight, SearchX } from 'lucide-react';
+import usePageTitle from '../hooks/usePageTitle';
 
 const NotFound: React.FC = () => {
+  usePageTitle('الصفحة غير موجودة');
   return (
     <div className="min-h-[70vh] flex items-center justify-center px-4">
       <div className="text-center max-w-lg">

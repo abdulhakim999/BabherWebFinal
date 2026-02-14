@@ -4,8 +4,12 @@ import SectionHeader from '../components/SectionHeader';
 import ContentCard from '../components/ContentCard';
 import ScrollReveal from '../components/ScrollReveal';
 import CountUp from '../components/CountUp';
-import { recentContent } from '../data';
+import { SkeletonGrid } from '../components/SkeletonCard';
 import { getContentStats, ContentStats } from '../services/stats';
+import { getCourses } from '../services/courses';
+import { getLectures } from '../services/lectures';
+import { ContentItem, ContentType } from '../types';
+import usePageTitle from '../hooks/usePageTitle';
 
 const StatCard = ({ label, count, icon, delay }: { label: string, count: number, icon: React.ReactNode, delay: number }) => (
   <ScrollReveal delay={delay} animation="scale-in" className="h-full">
@@ -24,6 +28,7 @@ const StatCard = ({ label, count, icon, delay }: { label: string, count: number,
 );
 
 const Home: React.FC = () => {
+  usePageTitle('الموقع الرسمي لفضيلة الشيخ محمد بن صالح بابحر', true);
   const [stats, setStats] = useState<ContentStats>({
     lessons: 0,
     lectures: 0,
@@ -32,13 +37,49 @@ const Home: React.FC = () => {
     books: 0,
     articles: 0,
   });
+  const [recentContent, setRecentContent] = useState<ContentItem[]>([]);
+  const [loadingRecent, setLoadingRecent] = useState(true);
 
   useEffect(() => {
-    const fetchStats = async () => {
-      const data = await getContentStats();
-      setStats(data);
+    const fetchData = async () => {
+      // Fetch stats and recent content in parallel
+      const [statsData, courses, lectures] = await Promise.all([
+        getContentStats(),
+        getCourses('ar').catch(() => []),
+        getLectures('ar').catch(() => []),
+      ]);
+      setStats(statsData);
+
+      // Convert and merge
+      const allItems: ContentItem[] = [
+        ...courses.map((c, i) => ({
+          id: c.sys?.id || `course-${i}`,
+          title: c.title,
+          description: c.description || '',
+          category: c.tag?.trim() || 'غير مصنف',
+          date: c.date || '',
+          type: ContentType.Lesson,
+          imageUrl: c.image?.url,
+          mediaUrl: c.videoUrl,
+        })),
+        ...lectures.map((l, i) => ({
+          id: l.sys?.id || `lecture-${i}`,
+          title: l.title,
+          description: l.description || '',
+          category: l.tag?.trim() || 'غير مصنف',
+          date: l.date || '',
+          type: ContentType.Lecture,
+          imageUrl: l.image?.url,
+          mediaUrl: l.videoUrl,
+        })),
+      ];
+
+      // Sort by date (newest first) and take 6
+      allItems.sort((a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime());
+      setRecentContent(allItems.slice(0, 6));
+      setLoadingRecent(false);
     };
-    fetchStats();
+    fetchData();
   }, []);
 
   return (
@@ -97,13 +138,17 @@ const Home: React.FC = () => {
           <SectionHeader title="أحدث المواد المضافة" centered />
         </ScrollReveal>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {recentContent.map((item, index) => (
-            <ScrollReveal key={item.id} delay={index * 100}>
-              <ContentCard item={item} />
-            </ScrollReveal>
-          ))}
-        </div>
+        {loadingRecent ? (
+          <SkeletonGrid count={6} />
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {recentContent.map((item, index) => (
+              <ScrollReveal key={item.id} delay={index * 100}>
+                <ContentCard item={item} />
+              </ScrollReveal>
+            ))}
+          </div>
+        )}
         
         <ScrollReveal delay={300} animation="fade-in">
           <div className="text-center mt-10">

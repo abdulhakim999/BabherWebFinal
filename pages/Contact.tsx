@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import SectionHeader from '../components/SectionHeader';
 import { Mail, Phone, MapPin, Send, CheckCircle, Youtube, BookOpen } from 'lucide-react';
 import ScrollReveal from '../components/ScrollReveal';
+import usePageTitle from '../hooks/usePageTitle';
 
 const Contact: React.FC = () => {
+  usePageTitle('تواصل معنا');
   const [formData, setFormData] = useState({
     name: '',
     email: '',

@@ -3,13 +3,19 @@ import SectionHeader from '../components/SectionHeader';
 import ContentCard from '../components/ContentCard';
 import ScrollReveal from '../components/ScrollReveal';
 import { SkeletonGrid } from '../components/SkeletonCard';
+import Pagination from '../components/Pagination';
 import { getCourses } from '../services/courses';
 import { Course } from '../types';
 import { ContentType } from '../types';
+import usePageTitle from '../hooks/usePageTitle';
 
+
+const ITEMS_PER_PAGE = 12;
 
 const Doros: React.FC = () => {
+  usePageTitle('مكتبة الدروس');
   const [activeCategory, setActiveCategory] = useState('الكل');
+  const [currentPage, setCurrentPage] = useState(1);
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -47,12 +53,31 @@ const Doros: React.FC = () => {
     mediaUrl: course.videoUrl,
   }));
 
-  // Build dynamic categories from actual data
-  const dynamicCategories = ['الكل', ...Array.from(new Set(convertedLessons.map(l => l.category)))];
+  const dynamicCategories = convertedLessons.reduce<string[]>((acc, l) => {
+    if (l.category && !acc.includes(l.category)) acc.push(l.category);
+    return acc;
+  }, ['الكل']);
 
   const filteredLessons = activeCategory === 'الكل' 
     ? convertedLessons 
     : convertedLessons.filter(item => item.category === activeCategory);
+
+  // Pagination
+  const totalPages = Math.ceil(filteredLessons.length / ITEMS_PER_PAGE);
+  const paginatedLessons = filteredLessons.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  const handleCategoryChange = (cat: string) => {
+    setActiveCategory(cat);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   if (loading) {
     return (
@@ -89,7 +114,7 @@ const Doros: React.FC = () => {
           {dynamicCategories.map(cat => (
             <button
               key={cat}
-              onClick={() => setActiveCategory(cat)}
+              onClick={() => handleCategoryChange(cat)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                 activeCategory === cat 
                   ? 'bg-amber-600 text-white shadow-md transform scale-105' 
@@ -103,7 +128,7 @@ const Doros: React.FC = () => {
       </ScrollReveal>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {filteredLessons.map((item, index) => (
+        {paginatedLessons.map((item, index) => (
           <ScrollReveal key={item.id} delay={index * 50} animation="slide-up">
             <ContentCard item={item} />
           </ScrollReveal>
@@ -112,10 +137,18 @@ const Doros: React.FC = () => {
       
       {filteredLessons.length === 0 && (
         <ScrollReveal animation="fade-in">
-          <div className="text-center py-20 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200">
-            <p className="text-gray-500">لا توجد دروس في هذا التصنيف حالياً.</p>
+          <div className="text-center py-20 bg-gray-50 dark:bg-gray-800 rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-700">
+            <p className="text-gray-500 dark:text-gray-400">لا توجد دروس في هذا التصنيف حالياً.</p>
           </div>
         </ScrollReveal>
+      )}
+
+      {filteredLessons.length > ITEMS_PER_PAGE && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
       )}
     </div>
   );

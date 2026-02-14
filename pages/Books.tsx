@@ -3,8 +3,10 @@ import { Download, Eye } from 'lucide-react';
 import SectionHeader from '../components/SectionHeader';
 import { booksData } from '../data';
 import { Link } from 'react-router-dom';
+import usePageTitle from '../hooks/usePageTitle';
 
 const Books: React.FC = () => {
+  usePageTitle('مكتبة الكتب');
   return (
     <div className="container mx-auto px-4 py-12">
       <SectionHeader 

@@ -5,8 +5,10 @@ import { useFavorites } from '../context/FavoritesContext';
 import { getItemById } from '../data';
 import { Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import usePageTitle from '../hooks/usePageTitle';
 
 const Favorites: React.FC = () => {
+  usePageTitle('المفضلة');
   const { favorites } = useFavorites();
   
   // Resolve IDs to actual content items

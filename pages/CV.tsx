@@ -1,8 +1,10 @@
 import React from 'react';
 import SectionHeader from '../components/SectionHeader';
 import ScrollReveal from '../components/ScrollReveal';
+import usePageTitle from '../hooks/usePageTitle';
 
 const CV: React.FC = () => {
+  usePageTitle('السيرة الذاتية');
   return (
     <div className="container mx-auto px-4 py-12">
       <SectionHeader title="السيرة الذاتية" subtitle="المسيرة العلمية والدعوية" />
