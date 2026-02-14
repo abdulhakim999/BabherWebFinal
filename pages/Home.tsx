@@ -65,20 +65,26 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const [statsData, courses, lectures] = await Promise.all([
-        getContentStats(),
-        getCourses('ar').catch(() => []),
-        getLectures('ar').catch(() => [])
-      ]);
-      setStats(statsData);
-      
-      const allItems: ContentItem[] = [
-        ...courses.map(courseToContentItem),
-        ...lectures.map(lectureToContentItem)
-      ];
-      allItems.sort((a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime());
-      setRecentContent(allItems.slice(0, 6));
-      setLoadingRecent(false);
+      try {
+        const [statsData, courses, lectures] = await Promise.all([
+          getContentStats().catch(() => ({ lessons: 0, lectures: 0, speeches: 0, benefits: 0, books: 0, articles: 0 })),
+          getCourses('ar').catch(() => []),
+          getLectures('ar').catch(() => [])
+        ]);
+        setStats(statsData);
+        
+        const allItems: ContentItem[] = [
+          ...courses.map(courseToContentItem),
+          ...lectures.map(lectureToContentItem)
+        ];
+        allItems.sort((a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime());
+        setRecentContent(allItems.slice(0, 6));
+      } catch (error) {
+        console.error("Failed to fetch home data:", error);
+        // Fallback to empty state is handled by initial state
+      } finally {
+        setLoadingRecent(false);
+      }
     };
     fetchData();
   }, []);
