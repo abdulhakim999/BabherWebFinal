@@ -64,12 +64,12 @@ const Home: React.FC = () => {
 
         <div className="container mx-auto px-4 relative z-10 text-center">
           <ScrollReveal animation="slide-down">
-            <h1 className="text-4xl md:text-6xl font-bold font-traditional mb-6 drop-shadow-lg">الموقع الرسمي للشيخ</h1>
+            <h1 className="text-4xl md:text-6xl font-bold font-traditional mb-6 drop-shadow-lg">الموقع الرسمي لفضيلة الشيخ محمد بن صالح بابحر</h1>
           </ScrollReveal>
           
           <ScrollReveal animation="fade-in" delay={200}>
             <p className="text-xl md:text-2xl text-amber-300 mb-10 max-w-3xl mx-auto leading-relaxed drop-shadow-md font-medium">
-              مكتبة علمية شاملة تضم الدروس والمحاضرات والكتب والفوائد في مختلف العلوم الشرعية
+              نشر الميراث العلمي للشيخ أبي إبراهيم محمد بابحر رحمه الله من خطب ودروس ومحاضرات وفوائد وكتب
             </p>
           </ScrollReveal>
           
@@ -140,9 +140,9 @@ const Home: React.FC = () => {
             </div>
             <div className="w-full md:w-2/3">
               <ScrollReveal animation="slide-up" delay={200}>
-                <h2 className="text-3xl font-bold font-traditional text-gray-900 dark:text-white mb-6">منارة للعلم الشرعي الأصيل</h2>
+                <h2 className="text-3xl font-bold font-traditional text-gray-900 dark:text-white mb-6">الشيخ أبو إبراهيم محمد بن صالح بابحر رحمه الله</h2>
                 <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-6">
-                  نسعى من خلال هذا الموقع إلى نشر العلم الشرعي المؤصل، وفق منهج أهل السنة والجماعة، وربط الناس بكتاب ربهم وسنة نبيهم ﷺ، من خلال دروس علمية منهجية، ومحاضرات توعوية، وخطب منبرية، وكتب ومقالات علمية.
+                  هذا الموقع يهتم بنشر الميراث العلمي للشيخ أبي إبراهيم محمد بن صالح بابحر رحمه الله، من خطب ودروس ومحاضرات وخواطر وفوائد وفتاوى وكتب وغير ذلك.
                 </p>
                 <a href="#/cv" className="text-amber-700 dark:text-amber-500 font-bold border-b-2 border-amber-600 hover:text-amber-800 dark:hover:text-amber-400 pb-1 inline-block hover:border-amber-800 transition-colors">
                   اقرأ السيرة الذاتية

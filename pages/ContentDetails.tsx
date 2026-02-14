@@ -269,8 +269,8 @@ const ContentDetails: React.FC = () => {
                  <img src="https://picsum.photos/seed/sheikh/100/100" alt="الشيخ" className="w-full h-full object-cover" />
                </div>
                <div>
-                 <h3 className="font-bold text-gray-900 dark:text-white">الشيخ د. عبد الله</h3>
-                 <p className="text-sm text-gray-500 dark:text-gray-400">عضو هيئة التدريس</p>
+                 <h3 className="font-bold text-gray-900 dark:text-white">الشيخ محمد بن صالح بابحر</h3>
+                 <p className="text-sm text-gray-500 dark:text-gray-400">رحمه الله</p>
                </div>
              </div>
              <Link to="/cv" className="block w-full text-center py-2 border border-amber-600 text-amber-600 dark:text-amber-500 rounded-lg hover:bg-amber-50 dark:hover:bg-amber-900/20 text-sm font-bold transition-colors">

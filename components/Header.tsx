@@ -28,8 +28,8 @@ const Header: React.FC = () => {
                 <BookOpen size={28} />
               </div>
               <div className="flex flex-col">
-                <span className="text-xl font-bold text-gray-900 dark:text-white leading-none font-traditional">الشيخ د. عبد الله</span>
-                <span className="text-sm text-amber-700 dark:text-amber-500">الموقع الرسمي للعالم الشرعي</span>
+                <span className="text-xl font-bold text-gray-900 dark:text-white leading-none font-traditional">الشيخ محمد بابحر</span>
+                <span className="text-sm text-amber-700 dark:text-amber-500">الموقع الرسمي لفضيلة الشيخ</span>
               </div>
             </Link>
 

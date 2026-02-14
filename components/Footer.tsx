@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mail, Phone, MapPin, Twitter, Facebook, Youtube } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, Youtube, BookOpen } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
           <div>
             <h3 className="text-xl font-bold mb-4 font-traditional text-amber-500">عن الموقع</h3>
             <p className="text-gray-400 leading-relaxed text-sm">
-              موقع إلكتروني علمي شرعي شخصي يهدف إلى توفير مكتبة شاملة تضم الدروس والمحاضرات والخطب والفوائد والكتب والمقالات في مجالات العقيدة والفقه والحديث والتفسير.
+              هذه القناة تهتم بنشر الميراث العلمي للشيخ أبي إبراهيم محمد بن صالح بابحر رحمه الله، من خطب ودروس ومحاضرات وخواطر وفوائد وفتاوى وكتب وغير ذلك.
             </p>
           </div>
 
@@ -44,15 +44,15 @@ const Footer: React.FC = () => {
             </div>
             
             <div className="mt-6 flex space-x-4 space-x-reverse">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors"><Twitter size={20} /></a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors"><Facebook size={20} /></a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors"><Youtube size={20} /></a>
+              <a href="https://youtube.com/channel/UCNtUH-AiA3_C3_dBC2MUFTQ" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-red-500 transition-colors" title="قناة اليوتيوب"><Youtube size={20} /></a>
+              <a href="https://www.facebook.com/mbabher" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-500 transition-colors" title="فيسبوك"><Facebook size={20} /></a>
+              <a href="http://babhar.blogspot.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-amber-400 transition-colors" title="المدونة"><BookOpen size={20} /></a>
             </div>
           </div>
         </div>
         
         <div className="border-t border-gray-800 mt-10 pt-6 text-center text-sm text-gray-500">
-          <p>© {new Date().getFullYear()} جميع الحقوق محفوظة للموقع الرسمي للشيخ.</p>
+          <p>© {new Date().getFullYear()} جميع الحقوق محفوظة للموقع الرسمي للشيخ محمد بن صالح بابحر رحمه الله.</p>
         </div>
       </div>
     </footer>
