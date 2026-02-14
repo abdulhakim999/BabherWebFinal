@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Mic, Book, Video, FileText, PenTool, Radio } from 'lucide-react';
 import SectionHeader from '../components/SectionHeader';
 import ContentCard from '../components/ContentCard';
 import ScrollReveal from '../components/ScrollReveal';
 import CountUp from '../components/CountUp';
-import { stats, recentContent } from '../data';
+import { recentContent } from '../data';
+import { getContentStats, ContentStats } from '../services/stats';
 
 const StatCard = ({ label, count, icon, delay }: { label: string, count: number, icon: React.ReactNode, delay: number }) => (
   <ScrollReveal delay={delay} animation="scale-in" className="h-full">
@@ -23,6 +24,23 @@ const StatCard = ({ label, count, icon, delay }: { label: string, count: number,
 );
 
 const Home: React.FC = () => {
+  const [stats, setStats] = useState<ContentStats>({
+    lessons: 0,
+    lectures: 0,
+    speeches: 0,
+    benefits: 0,
+    books: 0,
+    articles: 0,
+  });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      const data = await getContentStats();
+      setStats(data);
+    };
+    fetchStats();
+  }, []);
+
   return (
     <div className="space-y-12 pb-12">
       {/* Hero Section */}
