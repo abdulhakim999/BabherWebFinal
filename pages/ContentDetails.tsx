@@ -9,6 +9,33 @@ import BookPreviewModal from '../components/BookPreviewModal';
 import { useAudio } from '../context/AudioContext';
 import { useFavorites } from '../context/FavoritesContext';
 
+// Helper function to convert YouTube URL to embed URL
+const getYouTubeEmbedUrl = (url: string): string => {
+  if (!url) return '';
+  
+  // If already an embed URL, return as is
+  if (url.includes('/embed/')) return url;
+  
+  // Extract video ID from various YouTube URL formats
+  let videoId = '';
+  
+  // Format: https://www.youtube.com/watch?v=VIDEO_ID
+  if (url.includes('youtube.com/watch')) {
+    const urlParams = new URLSearchParams(url.split('?')[1]);
+    videoId = urlParams.get('v') || '';
+  }
+  // Format: https://youtu.be/VIDEO_ID
+  else if (url.includes('youtu.be/')) {
+    videoId = url.split('youtu.be/')[1].split('?')[0];
+  }
+  // Format: https://www.youtube.com/embed/VIDEO_ID
+  else if (url.includes('youtube.com/embed/')) {
+    return url;
+  }
+  
+  return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
+};
+
 const ContentDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [item, setItem] = useState<ContentItem | undefined>(undefined);
@@ -69,22 +96,38 @@ const ContentDetails: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
         {/* Main Content */}
         <div className="lg:col-span-2">
-          {/* Hero Media / Image */}
+          {/* Hero Media / Video / Image */}
           <div className="rounded-2xl overflow-hidden shadow-lg mb-8 bg-gray-100 dark:bg-gray-800 relative group">
-            <img 
-              src={item.imageUrl} 
-              alt={item.title} 
-              className="w-full h-auto max-h-[500px] object-cover"
-            />
-            {(item.type === 'Lesson' || item.type === 'Lecture' || item.type === 'Speech') && (
-              <div className="absolute inset-0 bg-black/30 flex items-center justify-center group-hover:bg-black/40 transition-colors">
-                 <button 
-                  onClick={handlePlay}
-                  className="w-20 h-20 bg-amber-600 hover:bg-amber-700 text-white rounded-full flex items-center justify-center shadow-2xl transform hover:scale-110 transition-all"
-                >
-                  {isAudioPlaying ? <div className="flex gap-1"><div className="w-2 h-8 bg-white"></div><div className="w-2 h-8 bg-white"></div></div> : <Play size={40} className="ml-2" />}
-                </button>
+            {/* If videoUrl exists (from Contentful), show YouTube player */}
+            {item.mediaUrl ? (
+              <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                <iframe
+                  className="absolute top-0 left-0 w-full h-full"
+                  src={getYouTubeEmbedUrl(item.mediaUrl)}
+                  title={item.title}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
               </div>
+            ) : (
+              <>
+                <img 
+                  src={item.imageUrl} 
+                  alt={item.title} 
+                  className="w-full h-auto max-h-[500px] object-cover"
+                />
+                {(item.type === 'Lesson' || item.type === 'Lecture' || item.type === 'Speech') && (
+                  <div className="absolute inset-0 bg-black/30 flex items-center justify-center group-hover:bg-black/40 transition-colors">
+                     <button 
+                      onClick={handlePlay}
+                      className="w-20 h-20 bg-amber-600 hover:bg-amber-700 text-white rounded-full flex items-center justify-center shadow-2xl transform hover:scale-110 transition-all"
+                    >
+                      {isAudioPlaying ? <div className="flex gap-1"><div className="w-2 h-8 bg-white"></div><div className="w-2 h-8 bg-white"></div></div> : <Play size={40} className="ml-2" />}
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </div>
 
