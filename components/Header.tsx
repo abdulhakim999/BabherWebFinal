@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { Menu, X, BookOpen, Heart, Search, Moon, Sun } from 'lucide-react';
+import { Menu, X, BookOpen, Heart, Search, Moon, Sun, Globe } from 'lucide-react';
 import SearchOverlay from './SearchOverlay';
 import { useTheme } from '../context/ThemeContext';
 
@@ -15,58 +15,71 @@ const navItems = [
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const { theme, toggleTheme } = useTheme();
+
+  // Handle Scroll Effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-white dark:bg-gray-900 shadow-md border-b-2 border-amber-600 transition-colors duration-300">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center h-20">
+      <header 
+        className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 border-b border-transparent ${
+          isScrolled 
+            ? 'h-16 glass-heavy border-gray-200/50 dark:border-gray-800/50' 
+            : 'h-24 bg-transparent' // Starts transparent on Hero
+        }`}
+      >
+        <div className="container mx-auto px-4 h-full">
+          <div className="flex justify-between items-center h-full">
             {/* Logo Section */}
-            <Link to="/" className="flex items-center space-x-3 space-x-reverse hover:opacity-90 transition-opacity">
-              <div className="bg-amber-600 p-2 rounded-lg text-white shadow-sm">
-                <BookOpen size={28} />
+            <Link to="/" className="flex items-center space-x-3 space-x-reverse group">
+              <div className={`bg-amber-600 p-2 rounded-xl text-white shadow-lg shadow-amber-600/20 transition-all duration-300 ${isScrolled ? 'scale-90' : 'scale-100'}`}>
+                <BookOpen size={isScrolled ? 24 : 28} />
               </div>
               <div className="flex flex-col">
-                <span className="text-xl font-bold text-gray-900 dark:text-white leading-none font-traditional">الشيخ محمد بابحر</span>
-                <span className="text-sm text-amber-700 dark:text-amber-500">الموقع الرسمي لفضيلة الشيخ</span>
+                <span className={`font-bold text-gray-900 dark:text-white leading-none font-traditional transition-all duration-300 ${isScrolled ? 'text-lg' : 'text-2xl'}`}>
+                  الشيخ محمد بابحر
+                </span>
+                {!isScrolled && (
+                  <span className="text-sm text-amber-700 dark:text-amber-500 opacity-90 animate-fade-in">
+                    الموقع الرسمي لفضيلة الشيخ
+                  </span>
+                )}
               </div>
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden xl:flex items-center space-x-2 space-x-reverse">
-              <nav className="flex items-center space-x-1 space-x-reverse">
+            <div className="hidden xl:flex items-center space-x-6 space-x-reverse">
+              <nav className="flex items-center space-x-2 space-x-reverse bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm px-4 py-1.5 rounded-full border border-gray-100 dark:border-gray-700 shadow-sm">
                 {navItems.map((item) => (
                   <NavLink
                     key={item.path}
                     to={item.path}
                     className={({ isActive }) =>
-                      `relative px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 group flex items-center ${
+                      `relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                         isActive
-                          ? 'text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 font-bold'
-                          : 'text-gray-600 dark:text-gray-300 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-gray-50 dark:hover:bg-gray-800'
+                          ? 'text-white bg-amber-600 shadow-md shadow-amber-600/30'
+                          : 'text-gray-600 dark:text-gray-300 hover:text-amber-700 dark:hover:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/10'
                       }`
                     }
                   >
-                    {({ isActive }) => (
-                      <>
-                        <span>{item.label}</span>
-                        <span 
-                          className={`absolute bottom-0 left-0 w-full h-0.5 bg-amber-600 transform origin-right transition-transform duration-300 ${
-                            isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
-                          }`}
-                        ></span>
-                      </>
-                    )}
+                    {item.label}
                   </NavLink>
                 ))}
               </nav>
 
-              <div className="flex items-center gap-1 border-r border-gray-200 dark:border-gray-700 pr-2 mr-2">
+              <div className="flex items-center gap-2 pr-4 border-r border-gray-200 dark:border-gray-700">
                  {/* Favorites Link */}
                 <Link 
                   to="/favorites"
-                  className="p-2 text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition-colors"
+                  className="p-2.5 text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition-all hover:scale-105"
                   title="المفضلة"
                 >
                   <Heart size={20} />
@@ -75,7 +88,7 @@ const Header: React.FC = () => {
                 {/* Theme Toggle */}
                 <button 
                   onClick={toggleTheme}
-                  className="p-2 text-gray-500 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/20 rounded-full transition-colors"
+                  className="p-2.5 text-gray-500 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/20 rounded-full transition-all hover:scale-105"
                   title={theme === 'light' ? 'الوضع الليلي' : 'الوضع النهاري'}
                 >
                   {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
@@ -84,10 +97,19 @@ const Header: React.FC = () => {
                 {/* Search Button */}
                 <button 
                   onClick={() => setIsSearchOpen(true)}
-                  className="p-2 text-gray-500 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/20 rounded-full transition-colors"
+                  className="p-2.5 text-gray-500 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/20 rounded-full transition-all hover:scale-105"
                   title="بحث"
                 >
                   <Search size={20} />
+                </button>
+
+                {/* Language Switcher (Mock) */}
+                <button 
+                  className="flex items-center gap-1 px-3 py-1.5 text-xs font-bold text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-full hover:border-amber-500 hover:text-amber-600 transition-all font-sans"
+                  title="Switch Language"
+                >
+                  <Globe size={14} />
+                  <span>EN</span>
                 </button>
               </div>
             </div>
@@ -95,9 +117,9 @@ const Header: React.FC = () => {
             {/* Mobile Actions */}
             <div className="xl:hidden flex items-center space-x-2 space-x-reverse">
               <button 
-                onClick={toggleTheme}
-                className="p-2 text-gray-600 dark:text-gray-300 hover:text-amber-600"
-                aria-label={theme === 'light' ? 'الوضع الليلي' : 'الوضع النهاري'}
+                  onClick={toggleTheme}
+                  className="p-2 text-gray-600 dark:text-gray-300 hover:text-amber-600"
+                  aria-label={theme === 'light' ? 'الوضع الليلي' : 'الوضع النهاري'}
                 title={theme === 'light' ? 'الوضع الليلي' : 'الوضع النهاري'}
               >
                  {theme === 'light' ? <Moon size={22} /> : <Sun size={22} />}

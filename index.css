@@ -1,67 +1,135 @@
 @import "tailwindcss";
 
 @theme {
+  /* Brand Colors - Warm & Professional */
   --color-amber-50: #fffbeb;
   --color-amber-100: #fef3c7;
   --color-amber-200: #fde68a;
   --color-amber-300: #fcd34d;
   --color-amber-400: #fbbf24;
   --color-amber-500: #f59e0b;
-  --color-amber-600: #d97706;
+  --color-amber-600: #d97706;  /* Primary Brand Color */
   --color-amber-700: #b45309;
   --color-amber-800: #92400e;
   --color-amber-900: #78350f;
+  
+  /* Dark Mode Colors */
   --color-gray-850: #1f2937;
   --color-gray-900: #111827;
   --color-gray-950: #030712;
+
+  /* Custom Utilities */
+  --perspective-1000: 1000px;
 }
 
-/* Fonts */
+/* Base Styles */
 body {
   font-family: 'Tajawal', sans-serif;
+  @apply bg-gray-50 dark:bg-gray-950 text-gray-800 dark:text-gray-100 antialiased overflow-x-hidden;
 }
-h1, h2, h3, h4, h5, h6, .font-serif {
+
+h1, h2, h3, h4, h5, h6 {
   font-family: 'Tajawal', serif;
+  @apply font-bold tracking-tight;
 }
+
+/* Utilities */
 .font-traditional {
   font-family: 'Amiri', serif;
 }
 
-/* Custom Animations */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* Container override for larger screens */
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1320px;
+  }
 }
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(30px); }
+
+/* Glassmorphism Utilities */
+.glass {
+  @apply bg-white/70 dark:bg-gray-900/70 backdrop-blur-md border border-white/20 dark:border-gray-800/20 shadow-lg;
+}
+
+.glass-heavy {
+  @apply bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-800/50 shadow-sm;
+}
+
+/* Card Styles */
+.card-hover {
+  @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:hover:shadow-amber-900/10;
+}
+
+/* New Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
-@keyframes slideDown {
+
+@keyframes fadeInDown {
   from { opacity: 0; transform: translateY(-20px); }
   to { opacity: 1; transform: translateY(0); }
 }
-@keyframes scaleIn {
+
+@keyframes scaleUp {
   from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }
 }
-@keyframes heartPop {
-  0% { transform: scale(1); }
-  40% { transform: scale(1.4); }
-  100% { transform: scale(1); }
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.6s ease-out forwards;
+@keyframes scroll-loop {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); } /* RTL: might need positive value */
 }
-.animate-slide-up {
-  animation: slideUp 0.7s ease-out forwards;
+
+/* Arabic RTL Scroll Loop */
+[dir="rtl"] .animate-scroll-loop {
+  animation: scroll-loop-rtl 30s linear infinite;
 }
-.animate-slide-down {
-  animation: slideDown 0.6s ease-out forwards;
+@keyframes scroll-loop-rtl {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(50%); }
 }
-.animate-scale-in {
-  animation: scaleIn 0.5s ease-out forwards;
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
-.animate-heart-pop {
-  animation: heartPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+.animate-fade-in-down {
+  animation: fadeInDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-scale-up {
+  animation: scaleUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Delay Utilities */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-gray-900;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 dark:bg-gray-700 rounded-full hover:bg-amber-500 transition-colors;
+}
+
+/* Text Selection */
+::selection {
+  @apply bg-amber-500/30 text-amber-900 dark:text-amber-100;
 }

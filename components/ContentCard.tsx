@@ -12,14 +12,14 @@ interface ContentCardProps {
 
 const ContentCard: React.FC<ContentCardProps> = ({ item, showImage = true }) => {
   const { isFavorite, toggleFavorite } = useFavorites();
-  const { currentTrack, isPlaying, playTrack, togglePlay } = useAudio();
+  const { playTrack, currentTrack, isPlaying, togglePlay } = useAudio();
   
   const favorited = isFavorite(item.id);
   const [animateHeart, setAnimateHeart] = useState(false);
 
   // Check if this card is currently playing
-  const isCurrentTrack = currentTrack?.id === item.id;
-  const isCardPlaying = isCurrentTrack && isPlaying;
+  const isActive = currentTrack?.id === item.id;
+  const isCardPlaying = isActive && isPlaying;
   
   // Can this content be played?
   const isPlayable = item.type === 'Lesson' || item.type === 'Lecture' || item.type === 'Speech' || item.type === 'Benefit';
