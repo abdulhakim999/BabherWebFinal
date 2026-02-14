@@ -6,7 +6,6 @@ import { getCourses } from '../services/courses';
 import { Course } from '../types';
 import { ContentType } from '../types';
 
-const categories = ['الكل', 'العقيدة', 'الفقه', 'الحديث', 'التفسير', 'الآداب'];
 
 const Doros: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('الكل');
@@ -40,12 +39,15 @@ const Doros: React.FC = () => {
     id: course.sys?.id || `course-${index}`,
     title: course.title,
     description: course.description || '',
-    category: course.tag || 'الكل',
+    category: course.tag?.trim() || 'غير مصنف',
     date: course.date || new Date().toLocaleDateString('ar-SA'),
     type: ContentType.Lesson,
     imageUrl: course.image?.url,
     mediaUrl: course.videoUrl,
   }));
+
+  // Build dynamic categories from actual data
+  const dynamicCategories = ['الكل', ...Array.from(new Set(convertedLessons.map(l => l.category)))];
 
   const filteredLessons = activeCategory === 'الكل' 
     ? convertedLessons 
@@ -81,7 +83,7 @@ const Doros: React.FC = () => {
       {/* Filter Tabs */}
       <ScrollReveal animation="fade-in" delay={100}>
         <div className="flex flex-wrap gap-2 mb-10 border-b border-gray-200 pb-4">
-          {categories.map(cat => (
+          {dynamicCategories.map(cat => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}

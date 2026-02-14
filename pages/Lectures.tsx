@@ -6,7 +6,6 @@ import { getLectures } from '../services/lectures';
 import { Lecture } from '../services/lectures';
 import { ContentType } from '../types';
 
-const categories = ['الكل', 'محاضرات عامة', 'ندوات', 'مؤتمرات'];
 
 const Lectures: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('الكل');
@@ -33,12 +32,15 @@ const Lectures: React.FC = () => {
     id: lecture.sys?.id || `lecture-${index}`,
     title: lecture.title,
     description: lecture.description || '',
-    category: lecture.tag || 'الكل',
+    category: lecture.tag?.trim() || 'غير مصنف',
     date: lecture.date || new Date().toLocaleDateString('ar-SA'),
     type: ContentType.Lecture,
     imageUrl: lecture.image?.url,
     mediaUrl: lecture.videoUrl,
   }));
+
+  // Build dynamic categories from actual data
+  const dynamicCategories = ['الكل', ...Array.from(new Set(convertedLectures.map(l => l.category)))];
 
   const filteredLectures = activeCategory === 'الكل'
     ? convertedLectures
@@ -64,7 +66,7 @@ const Lectures: React.FC = () => {
       {/* Filter Tabs */}
       <ScrollReveal animation="fade-in" delay={100}>
         <div className="flex flex-wrap gap-2 mb-10 border-b border-gray-200 pb-4">
-          {categories.map(cat => (
+          {dynamicCategories.map(cat => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
