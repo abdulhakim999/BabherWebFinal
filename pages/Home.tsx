@@ -140,7 +140,7 @@ const Home: React.FC = () => {
       <section className="py-20 relative transition-colors duration-500 overflow-hidden">
         {/* Background */}
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-[url('/images/pngtree-beautiful-masjid-design-background-image_15712084.jpg')] bg-cover bg-center opacity-10 dark:opacity-20"></div>
+          <div className="absolute inset-0 bg-[url('/images/نقش.png')] bg-cover bg-center opacity-10 dark:opacity-20"></div>
           <div className="absolute inset-0 bg-white/90 dark:bg-gray-900/95"></div>
         </div>
 
@@ -174,10 +174,11 @@ const Home: React.FC = () => {
             <div className="order-1 md:order-2 relative animate-scale-up delay-200">
               <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500">
                 <div className="aspect-[4/5] bg-gray-100 dark:bg-gray-800 relative">
-                  <div className="absolute inset-0 flex items-center justify-center text-gray-400">
-                    <BookOpen size={64} />
-                    {/* Image Placeholder - Sheikh's photo would go here */}
-                  </div>
+                  <img
+                    src="/images/الشيخ.png"
+                    alt="فضيلة الشيخ محمد بن صالح بابحر"
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-gray-900/10 to-transparent dark:from-gray-900/60"></div>
                   <div className="absolute bottom-6 right-6 text-gray-800 dark:text-white text-right">
                     <p className="font-traditional text-xl">الشيخ محمد بابحر</p>
