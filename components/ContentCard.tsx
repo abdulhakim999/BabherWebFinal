@@ -47,21 +47,21 @@ const ContentCard: React.FC<ContentCardProps> = ({ item, showImage = true }) => 
   return (
     <div className={`group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-100 dark:border-white/5 transition-all duration-500 hover:shadow-xl hover:shadow-amber-500/5 hover:-translate-y-1 h-full flex flex-col ${isActive ? 'ring-2 ring-amber-500 shadow-md' : ''}`}>
       {/* Image Container */}
-      {showImage && item.image && (
-        <div className="relative h-48 overflow-hidden bg-gray-100 dark:bg-gray-900">
+      {showImage && (item.imageUrl || (item as any).image) && (
+        <div className="relative aspect-video overflow-hidden bg-gray-100 dark:bg-gray-900 group-hover:shadow-inner transition-all duration-500">
           <img
-            src={item.image}
+            src={item.imageUrl || (item as any).image}
             alt={item.title}
-            className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 ${isActive ? 'scale-105' : ''}`}
+            className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 ${isActive ? 'scale-105' : ''}`}
             loading="lazy"
           />
 
           {/* Overlay Gradient */}
-          <div className={`absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity ${isActive ? 'opacity-80' : ''}`}></div>
+          <div className={`absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-50 group-hover:opacity-70 transition-opacity duration-500 ${isActive ? 'opacity-70' : ''}`}></div>
 
           {/* Play Button Overlay */}
           {isPlayable && (
-            <div className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+            <div className={`absolute inset-0 flex items-center justify-center transition-all duration-500 ${isActive ? 'opacity-100' : 'opacity-60 group-hover:opacity-100 group-hover:scale-110'}`}>
               <button
                 onClick={handlePlayClick}
                 className="w-14 h-14 bg-amber-600/90 text-white rounded-full flex items-center justify-center backdrop-blur-sm transform hover:scale-110 hover:bg-amber-500 transition-all shadow-lg"
@@ -83,9 +83,9 @@ const ContentCard: React.FC<ContentCardProps> = ({ item, showImage = true }) => 
           {/* Type Badge */}
           <div className="absolute bottom-3 right-3">
             <span className={`text-xs px-3 py-1 rounded-full font-bold shadow-sm ${item.type === 'Lesson' ? 'bg-blue-600/90 text-white' :
-                item.type === 'Lecture' ? 'bg-purple-600/90 text-white' :
-                  item.type === 'Speech' ? 'bg-emerald-600/90 text-white' :
-                    'bg-gray-600/90 text-white'
+              item.type === 'Lecture' ? 'bg-purple-600/90 text-white' :
+                item.type === 'Speech' ? 'bg-emerald-600/90 text-white' :
+                  'bg-gray-600/90 text-white'
               }`}>
               {item.type === 'Lesson' ? 'درس' :
                 item.type === 'Lecture' ? 'محاضرة' :
@@ -119,13 +119,13 @@ const ContentCard: React.FC<ContentCardProps> = ({ item, showImage = true }) => 
 
         <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700 mt-auto relative z-10">
           <div className="flex items-center gap-2 text-gray-400 text-xs">
-            {item.duration && (
+            {(item as any).duration && (
               <span className="flex items-center gap-1 bg-gray-50 dark:bg-gray-700/50 px-2 py-1 rounded-md">
-                <Clock size={12} /> {item.duration}
+                <Clock size={12} /> {(item as any).duration}
               </span>
             )}
             <span className="flex items-center gap-1 bg-gray-50 dark:bg-gray-700/50 px-2 py-1 rounded-md">
-              <Eye size={12} /> {item.views || 0}
+              <Eye size={12} /> {(item as any).views || 0}
             </span>
           </div>
 
@@ -133,8 +133,8 @@ const ContentCard: React.FC<ContentCardProps> = ({ item, showImage = true }) => 
             <button
               onClick={handleFavoriteClick}
               className={`p-2 rounded-full transition-all ${favorited
-                  ? 'text-red-500 bg-red-50 dark:bg-red-900/20'
-                  : 'text-gray-400 hover:text-red-500 hover:bg-gray-50 dark:hover:bg-gray-800'
+                ? 'text-red-500 bg-red-50 dark:bg-red-900/20'
+                : 'text-gray-400 hover:text-red-500 hover:bg-gray-50 dark:hover:bg-gray-800'
                 } ${animateHeart ? 'animate-heart-pop' : ''}`}
               title={favorited ? "إزالة من المفضلة" : "إضافة للمفضلة"}
             >

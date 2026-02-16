@@ -23,9 +23,12 @@ export interface ContentItem {
   date: string;
   type: ContentType;
   imageUrl?: string;
+  image?: string; // Backwards compatibility if needed
   downloadUrl?: string;
   mediaUrl?: string;
   videoUrl?: string;
+  duration?: string;
+  views?: number;
 }
 
 export interface StatItem {
