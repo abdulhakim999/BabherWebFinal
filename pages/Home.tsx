@@ -139,9 +139,11 @@ const Home: React.FC = () => {
       {/* 2. Intro / About Section */}
       <section className="py-20 relative transition-colors duration-500 overflow-hidden">
         {/* Background */}
+        {/* Background */}
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-[url('/images/نقش.png')] bg-cover bg-center opacity-10 dark:opacity-20"></div>
-          <div className="absolute inset-0 bg-white/90 dark:bg-gray-900/95"></div>
+          <div className="absolute inset-0 bg-[url('/images/الشيخ.png')] bg-cover bg-center bg-fixed opacity-10 dark:opacity-20 grayscale mix-blend-multiply dark:mix-blend-overlay"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/90 dark:from-gray-900 dark:via-gray-900/95 dark:to-gray-900/90"></div>
+          <div className="absolute inset-0 bg-[url('/images/نقش.png')] bg-cover bg-center opacity-5 mix-blend-multiply"></div>
         </div>
 
         <div className="container mx-auto px-4 relative z-10">

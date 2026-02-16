@@ -51,8 +51,8 @@ const Doros: React.FC = () => {
     return acc;
   }, ['الكل']);
 
-  const filteredLessons = activeCategory === 'الكل' 
-    ? convertedLessons 
+  const filteredLessons = activeCategory === 'الكل'
+    ? convertedLessons
     : convertedLessons.filter(item => item.category === activeCategory);
 
   // Pagination
@@ -75,9 +75,9 @@ const Doros: React.FC = () => {
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-12">
-        <SectionHeader 
-          title="مكتبة الدروس" 
-          subtitle="سلاسل علمية منهجية وشروح للمتون في مختلف الفنون الشرعية" 
+        <SectionHeader
+          title="مكتبة الدروس"
+          subtitle="سلاسل علمية منهجية وشروح للمتون في مختلف الفنون الشرعية"
         />
         <SkeletonGrid count={8} />
       </div>
@@ -95,54 +95,61 @@ const Doros: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12">
-      <SectionHeader 
-        title="مكتبة الدروس" 
-        subtitle="سلاسل علمية منهجية وشروح للمتون في مختلف الفنون الشرعية" 
-      />
-
-      {/* Filter Tabs */}
-      <ScrollReveal animation="fade-in" delay={100}>
-        <div className="flex flex-wrap gap-2 mb-10 border-b border-gray-200 pb-4">
-          {dynamicCategories.map(cat => (
-            <button
-              key={cat}
-              onClick={() => handleCategoryChange(cat)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                activeCategory === cat 
-                  ? 'bg-amber-600 text-white shadow-md transform scale-105' 
-                  : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200 hover:border-amber-300'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-      </ScrollReveal>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {paginatedLessons.map((item, index) => (
-          <ScrollReveal key={item.id} delay={index * 50} animation="slide-up">
-            <ContentCard item={item} />
-          </ScrollReveal>
-        ))}
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Background Image */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-[url('/images/دروس.jpg')] bg-cover bg-center bg-no-repeat opacity-15 dark:opacity-20 mix-blend-multiply dark:mix-blend-overlay"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-white/85 via-white/60 to-white/85 dark:from-gray-900/85 dark:via-gray-900/60 dark:to-gray-900/85"></div>
       </div>
-      
-      {filteredLessons.length === 0 && (
-        <ScrollReveal animation="fade-in">
-          <div className="text-center py-20 bg-gray-50 dark:bg-gray-800 rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-700">
-            <p className="text-gray-500 dark:text-gray-400">لا توجد دروس في هذا التصنيف حالياً.</p>
+
+      <div className="container mx-auto px-4 py-12 relative z-10">
+        <SectionHeader
+          title="مكتبة الدروس"
+          subtitle="سلاسل علمية منهجية وشروح للمتون في مختلف الفنون الشرعية"
+        />
+
+        {/* Filter Tabs */}
+        <ScrollReveal animation="fade-in" delay={100}>
+          <div className="flex flex-wrap gap-2 mb-10 border-b border-gray-200 pb-4">
+            {dynamicCategories.map(cat => (
+              <button
+                key={cat}
+                onClick={() => handleCategoryChange(cat)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${activeCategory === cat
+                  ? 'bg-amber-600 text-white shadow-md transform scale-105'
+                  : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200 hover:border-amber-300'
+                  }`}
+              >
+                {cat}
+              </button>
+            ))}
           </div>
         </ScrollReveal>
-      )}
 
-      {filteredLessons.length > ITEMS_PER_PAGE && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
-      )}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {paginatedLessons.map((item, index) => (
+            <ScrollReveal key={item.id} delay={index * 50} animation="slide-up">
+              <ContentCard item={item} />
+            </ScrollReveal>
+          ))}
+        </div>
+
+        {filteredLessons.length === 0 && (
+          <ScrollReveal animation="fade-in">
+            <div className="text-center py-20 bg-gray-50 dark:bg-gray-800 rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-700">
+              <p className="text-gray-500 dark:text-gray-400">لا توجد دروس في هذا التصنيف حالياً.</p>
+            </div>
+          </ScrollReveal>
+        )}
+
+        {filteredLessons.length > ITEMS_PER_PAGE && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        )}
+      </div>
     </div>
   );
 };
