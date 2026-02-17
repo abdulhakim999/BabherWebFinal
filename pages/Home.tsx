@@ -6,6 +6,7 @@ import ScrollReveal from '../components/ScrollReveal';
 import CountUp from '../components/CountUp';
 import { SkeletonGrid } from '../components/SkeletonCard';
 import BooksCarousel from '../components/BooksCarousel';
+import LatestContentCarousel from '../components/LatestContentCarousel';
 import { getContentStats, ContentStats } from '../services/stats';
 import { getCourses } from '../services/courses';
 import { getLectures } from '../services/lectures';
@@ -252,13 +253,7 @@ const Home: React.FC = () => {
             {loadingRecent ? (
               <SkeletonGrid count={3} />
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {recentContent.map((item, index) => (
-                  <div key={item.id} className={`animate-fade-in-up`} style={{ animationDelay: `${index * 100}ms` }}>
-                    <ContentCard item={item} />
-                  </div>
-                ))}
-              </div>
+              <LatestContentCarousel items={recentContent} />
             )}
 
             <div className="mt-12 text-center md:hidden">
