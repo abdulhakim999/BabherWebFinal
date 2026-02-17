@@ -5,12 +5,12 @@ import ContentCard from '../components/ContentCard';
 import ScrollReveal from '../components/ScrollReveal';
 import CountUp from '../components/CountUp';
 import { SkeletonGrid } from '../components/SkeletonCard';
-import PartnersCarousel from '../components/PartnersCarousel';
+import BooksCarousel from '../components/BooksCarousel';
 import { getContentStats, ContentStats } from '../services/stats';
 import { getCourses } from '../services/courses';
 import { getLectures } from '../services/lectures';
 import { getBooks } from '../services/books';
-import { ContentItem } from '../types';
+import { ContentItem, Book } from '../types';
 import { courseToContentItem, lectureToContentItem, bookToContentItem } from '../utils/contentMapper';
 import usePageTitle from '../hooks/usePageTitle';
 import HeroSlider from '../components/HeroSlider';
@@ -66,6 +66,7 @@ const Home: React.FC = () => {
   usePageTitle('الموقع الرسمي لفضيلة الشيخ محمد بن صالح بابحر', true);
   const [stats, setStats] = useState<ContentStats>({ lessons: 0, lectures: 0, speeches: 0, benefits: 0, books: 0, articles: 0 });
   const [recentContent, setRecentContent] = useState<ContentItem[]>([]);
+  const [recentBooks, setRecentBooks] = useState<Book[]>([]);
   const [loadingRecent, setLoadingRecent] = useState(true);
 
   useEffect(() => {
@@ -78,6 +79,7 @@ const Home: React.FC = () => {
           getBooks('ar').catch(() => [])
         ]);
         setStats(statsData);
+        setRecentBooks(books);
 
         const allItems: ContentItem[] = [
           ...courses.map(courseToContentItem),
@@ -108,15 +110,20 @@ const Home: React.FC = () => {
               الموقع الرسمي
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-bold font-traditional text-gray-900 dark:text-white leading-tight drop-shadow-sm dark:drop-shadow-2xl animate-fade-in-up delay-100">
-              فضيلة الشيخ <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-amber-800 dark:from-amber-200 dark:to-amber-500">
-                محمد بن صالح بابحر
-              </span>
+            <h1 className="text-5xl md:text-7xl font-bold font-traditional text-gray-900 dark:text-white leading-tight drop-shadow-sm dark:drop-shadow-2xl animate-fade-in-up delay-100 flex flex-col items-center">
+              <span>فضيلة الشيخ</span>
+              <div className="relative inline-block mt-4">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-amber-800 dark:from-amber-200 dark:to-amber-500 relative z-10">
+                  محمد بن صالح بابحر
+                </span>
+                <span className="absolute -left-4 top-1/2 -translate-y-1/2 -translate-x-full text-lg md:text-xl text-gray-500 dark:text-gray-400 font-traditional opacity-80 whitespace-nowrap">
+                  رحمه الله تعالى
+                </span>
+              </div>
             </h1>
 
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed animate-fade-in-up delay-200 font-medium">
-              رحمه الله تعالى • من علماء حضرموت ومفتيها، نذر حياته للعلم والدعوة ونفع الناس.
+              من علماء حضرموت ومفتيها، نذر حياته للعلم والدعوة ونفع الناس.
               هنا تجد ميراثه العلمي من خطب ودروس ومؤلفات.
             </p>
 
@@ -273,8 +280,8 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* 6. Partners Carousel */}
-      <PartnersCarousel />
+      {/* 6. Books Carousel */}
+      <BooksCarousel books={recentBooks} />
 
       {/* 7. Quick Contact */}
       <section className="py-24 relative overflow-hidden text-center text-white">
