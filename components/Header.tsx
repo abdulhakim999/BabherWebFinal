@@ -32,17 +32,19 @@ const Header: React.FC = () => {
     <>
       <header
         className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 border-b border-transparent ${isScrolled
-            ? 'h-16 glass-heavy border-gray-200/50 dark:border-gray-800/50'
-            : 'h-24 bg-transparent' // Starts transparent on Hero
+          ? 'h-16 glass-heavy border-gray-200/50 dark:border-gray-800/50'
+          : 'h-24 bg-transparent' // Starts transparent on Hero
           }`}
       >
         <div className="container mx-auto px-4 h-full">
           <div className="flex justify-between items-center h-full">
             {/* Logo Section */}
             <Link to="/" className="flex items-center space-x-3 space-x-reverse group">
-              <div className={`bg-amber-600 p-2 rounded-xl text-white shadow-lg shadow-amber-600/20 transition-all duration-300 ${isScrolled ? 'scale-90' : 'scale-100'}`}>
-                <BookOpen size={isScrolled ? 24 : 28} />
-              </div>
+              <img
+                src="/images/لوقو.png"
+                alt="شعار الموقع"
+                className={`h-14 w-auto object-contain transition-all duration-300 ${isScrolled ? 'h-10' : 'h-14'}`}
+              />
               <div className="flex flex-col">
                 <span className={`font-bold text-gray-900 dark:text-white leading-none font-traditional transition-all duration-300 ${isScrolled ? 'text-lg' : 'text-2xl'}`}>
                   الشيخ محمد بابحر
