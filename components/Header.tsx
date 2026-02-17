@@ -9,6 +9,7 @@ const navItems = [
   { label: 'السيرة الذاتية', path: '/cv' },
   { label: 'الدروس', path: '/doros' },
   { label: 'المحاضرات', path: '/lectures' },
+  { label: 'الكتب', path: '/books' },
   { label: 'تواصل معنا', path: '/contact' },
 ];
 
@@ -29,12 +30,11 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <header 
-        className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 border-b border-transparent ${
-          isScrolled 
-            ? 'h-16 glass-heavy border-gray-200/50 dark:border-gray-800/50' 
+      <header
+        className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 border-b border-transparent ${isScrolled
+            ? 'h-16 glass-heavy border-gray-200/50 dark:border-gray-800/50'
             : 'h-24 bg-transparent' // Starts transparent on Hero
-        }`}
+          }`}
       >
         <div className="container mx-auto px-4 h-full">
           <div className="flex justify-between items-center h-full">
@@ -63,10 +63,9 @@ const Header: React.FC = () => {
                     key={item.path}
                     to={item.path}
                     className={({ isActive }) =>
-                      `relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                        isActive
-                          ? 'text-white bg-amber-600 shadow-md shadow-amber-600/30'
-                          : 'text-gray-600 dark:text-gray-300 hover:text-amber-700 dark:hover:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/10'
+                      `relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${isActive
+                        ? 'text-white bg-amber-600 shadow-md shadow-amber-600/30'
+                        : 'text-gray-600 dark:text-gray-300 hover:text-amber-700 dark:hover:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/10'
                       }`
                     }
                   >
@@ -76,8 +75,8 @@ const Header: React.FC = () => {
               </nav>
 
               <div className="flex items-center gap-2 pr-4 border-r border-gray-200 dark:border-gray-700">
-                 {/* Favorites Link */}
-                <Link 
+                {/* Favorites Link */}
+                <Link
                   to="/favorites"
                   className="p-2.5 text-gray-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition-all hover:scale-105"
                   title="المفضلة"
@@ -86,7 +85,7 @@ const Header: React.FC = () => {
                 </Link>
 
                 {/* Theme Toggle */}
-                <button 
+                <button
                   onClick={toggleTheme}
                   className="p-2.5 text-gray-500 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/20 rounded-full transition-all hover:scale-105"
                   title={theme === 'light' ? 'الوضع الليلي' : 'الوضع النهاري'}
@@ -95,7 +94,7 @@ const Header: React.FC = () => {
                 </button>
 
                 {/* Search Button */}
-                <button 
+                <button
                   onClick={() => setIsSearchOpen(true)}
                   className="p-2.5 text-gray-500 dark:text-gray-400 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/20 rounded-full transition-all hover:scale-105"
                   title="بحث"
@@ -104,7 +103,7 @@ const Header: React.FC = () => {
                 </button>
 
                 {/* Language Switcher (Mock) */}
-                <button 
+                <button
                   className="flex items-center gap-1 px-3 py-1.5 text-xs font-bold text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-full hover:border-amber-500 hover:text-amber-600 transition-all font-sans"
                   title="Switch Language"
                 >
@@ -116,16 +115,16 @@ const Header: React.FC = () => {
 
             {/* Mobile Actions */}
             <div className="xl:hidden flex items-center space-x-2 space-x-reverse">
-              <button 
-                  onClick={toggleTheme}
-                  className="p-2 text-gray-600 dark:text-gray-300 hover:text-amber-600"
-                  aria-label={theme === 'light' ? 'الوضع الليلي' : 'الوضع النهاري'}
+              <button
+                onClick={toggleTheme}
+                className="p-2 text-gray-600 dark:text-gray-300 hover:text-amber-600"
+                aria-label={theme === 'light' ? 'الوضع الليلي' : 'الوضع النهاري'}
                 title={theme === 'light' ? 'الوضع الليلي' : 'الوضع النهاري'}
               >
-                 {theme === 'light' ? <Moon size={22} /> : <Sun size={22} />}
+                {theme === 'light' ? <Moon size={22} /> : <Sun size={22} />}
               </button>
-              
-              <button 
+
+              <button
                 onClick={() => setIsSearchOpen(true)}
                 className="p-2 text-gray-600 dark:text-gray-300 hover:text-amber-600"
                 aria-label="بحث"
@@ -133,7 +132,7 @@ const Header: React.FC = () => {
               >
                 <Search size={24} />
               </button>
-              
+
               <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="p-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-amber-600 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none transition-colors"
@@ -145,10 +144,9 @@ const Header: React.FC = () => {
         </div>
 
         {/* Mobile Navigation */}
-        <div 
-          className={`xl:hidden bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 overflow-hidden transition-all duration-300 ease-in-out ${
-            isOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'
-          }`}
+        <div
+          className={`xl:hidden bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'
+            }`}
         >
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 shadow-inner">
             {navItems.map((item) => (
@@ -157,29 +155,27 @@ const Header: React.FC = () => {
                 to={item.path}
                 onClick={() => setIsOpen(false)}
                 className={({ isActive }) =>
-                  `flex items-center px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 ${
-                    isActive
-                      ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 font-bold border-r-4 border-amber-600'
-                      : 'text-gray-600 dark:text-gray-300 hover:text-amber-600 hover:bg-gray-50 dark:hover:bg-gray-800 border-r-4 border-transparent'
+                  `flex items-center px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 ${isActive
+                    ? 'bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 font-bold border-r-4 border-amber-600'
+                    : 'text-gray-600 dark:text-gray-300 hover:text-amber-600 hover:bg-gray-50 dark:hover:bg-gray-800 border-r-4 border-transparent'
                   }`
                 }
               >
                 {item.label}
               </NavLink>
             ))}
-             <NavLink
-                to="/favorites"
-                onClick={() => setIsOpen(false)}
-                className={({ isActive }) =>
-                  `flex items-center px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 ${
-                    isActive
-                      ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 font-bold border-r-4 border-red-500'
-                      : 'text-gray-600 dark:text-gray-300 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 border-r-4 border-transparent'
-                  }`
-                }
-              >
-                <Heart size={18} className="ml-3" /> المفضلة
-              </NavLink>
+            <NavLink
+              to="/favorites"
+              onClick={() => setIsOpen(false)}
+              className={({ isActive }) =>
+                `flex items-center px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 ${isActive
+                  ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 font-bold border-r-4 border-red-500'
+                  : 'text-gray-600 dark:text-gray-300 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 border-r-4 border-transparent'
+                }`
+              }
+            >
+              <Heart size={18} className="ml-3" /> المفضلة
+            </NavLink>
           </div>
         </div>
       </header>

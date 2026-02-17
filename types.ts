@@ -50,3 +50,24 @@ export interface Course {
     url: string;
   };
 }
+
+export interface Book {
+  sys?: {
+    id: string;
+  };
+  title: string;
+  description?: string;
+  bookUrl?: string;
+  tag?: string;
+  date?: string;
+  image?: {
+    url: string;
+    title?: string;
+    description?: string;
+    contentType?: string;
+    fileName?: string;
+    size?: number;
+    width?: number;
+    height?: number;
+  };
+}

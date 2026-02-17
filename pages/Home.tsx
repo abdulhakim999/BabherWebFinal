@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Mic, Book, Video, PenTool, Radio, BookOpen, ChevronLeft, ArrowLeft } from 'lucide-react';
+import { Mic, Book as BookIcon, Video, PenTool, Radio, BookOpen, ChevronLeft, ArrowLeft } from 'lucide-react';
 import SectionHeader from '../components/SectionHeader';
 import ContentCard from '../components/ContentCard';
 import ScrollReveal from '../components/ScrollReveal';
@@ -9,8 +9,9 @@ import PartnersCarousel from '../components/PartnersCarousel';
 import { getContentStats, ContentStats } from '../services/stats';
 import { getCourses } from '../services/courses';
 import { getLectures } from '../services/lectures';
+import { getBooks } from '../services/books';
 import { ContentItem } from '../types';
-import { courseToContentItem, lectureToContentItem } from '../utils/contentMapper';
+import { courseToContentItem, lectureToContentItem, bookToContentItem } from '../utils/contentMapper';
 import usePageTitle from '../hooks/usePageTitle';
 import HeroSlider from '../components/HeroSlider';
 
@@ -70,16 +71,18 @@ const Home: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [statsData, courses, lectures] = await Promise.all([
+        const [statsData, courses, lectures, books] = await Promise.all([
           getContentStats().catch(() => ({ lessons: 0, lectures: 0, speeches: 0, benefits: 0, books: 0, articles: 0 })),
           getCourses('ar').catch(() => []),
-          getLectures('ar').catch(() => [])
+          getLectures('ar').catch(() => []),
+          getBooks('ar').catch(() => [])
         ]);
         setStats(statsData);
 
         const allItems: ContentItem[] = [
           ...courses.map(courseToContentItem),
-          ...lectures.map(lectureToContentItem)
+          ...lectures.map(lectureToContentItem),
+          ...books.map(b => bookToContentItem(b, 0))
         ];
         allItems.sort((a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime());
         setRecentContent(allItems.slice(0, 6));
@@ -210,7 +213,7 @@ const Home: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
             <CategoryCard title="الدروس" count="+120" icon={<Mic size={32} />} href="/doros" delay={0} />
             <CategoryCard title="المحاضرات" count="+85" icon={<Radio size={32} />} href="/lectures" delay={100} />
-            <CategoryCard title="الكتب" count="+15" icon={<Book size={32} />} href="/books" delay={200} />
+            <CategoryCard title="الكتب" count="+15" icon={<BookIcon size={32} />} href="/books" delay={200} />
             <CategoryCard title="الخطب" count="+200" icon={<Mic size={32} />} href="/speech" delay={300} />
           </div>
         </div>
@@ -263,7 +266,7 @@ const Home: React.FC = () => {
               <StatCard label="محاضرات" count={stats.lectures} icon={<Video size={24} />} delay={100} />
               <StatCard label="خطب جمعة" count={stats.speeches} icon={<Mic size={24} />} delay={200} />
               <StatCard label="فوائد ومقاطع" count={stats.benefits} icon={<Radio size={24} />} delay={300} />
-              <StatCard label="مؤلفات" count={stats.books} icon={<Book size={24} />} delay={400} />
+              <StatCard label="مؤلفات" count={stats.books} icon={<BookIcon size={24} />} delay={400} />
               <StatCard label="مقالات" count={stats.articles} icon={<PenTool size={24} />} delay={500} />
             </div>
           </div>

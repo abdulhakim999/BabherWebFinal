@@ -1,4 +1,5 @@
-import { ContentItem, ContentType, Course } from '../types';
+import { ContentItem, ContentType, Course, Book } from '../types';
+
 
 // Lecture type matches Course structure from Contentful
 interface Lecture {
@@ -34,5 +35,18 @@ export function lectureToContentItem(l: Lecture, index: number): ContentItem {
     type: ContentType.Lecture,
     imageUrl: l.image?.url,
     mediaUrl: l.videoUrl,
+  };
+}
+
+export function bookToContentItem(b: Book, index: number): ContentItem {
+  return {
+    id: b.sys?.id || `book-${index}`,
+    title: b.title,
+    description: b.description || '',
+    category: b.tag?.trim() || 'كتاب',
+    date: b.date || '',
+    type: ContentType.Book,
+    imageUrl: b.image?.url,
+    downloadUrl: b.bookUrl,
   };
 }

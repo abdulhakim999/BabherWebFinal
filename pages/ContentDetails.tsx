@@ -3,6 +3,8 @@ import { useParams, Link } from 'react-router-dom';
 import { Calendar, Tag, ArrowLeft, Download, Share2, Play, Eye, BookOpen, Clock, Heart } from 'lucide-react';
 import { getCourseById } from '../services/courses';
 import { getLectureById } from '../services/lectures';
+import { getBookById } from '../services/books';
+import { bookToContentItem } from '../utils/contentMapper';
 import { ContentItem, ContentType } from '../types';
 import SectionHeader from '../components/SectionHeader';
 import ContentCard from '../components/ContentCard';
@@ -14,13 +16,13 @@ import usePageTitle from '../hooks/usePageTitle';
 // Helper function to convert YouTube URL to embed URL
 const getYouTubeEmbedUrl = (url: string): string => {
   if (!url) return '';
-  
+
   // If already an embed URL, return as is
   if (url.includes('/embed/')) return url;
-  
+
   // Extract video ID from various YouTube URL formats
   let videoId = '';
-  
+
   // Format: https://www.youtube.com/watch?v=VIDEO_ID
   if (url.includes('youtube.com/watch')) {
     const urlParams = new URLSearchParams(url.split('?')[1]);
@@ -34,7 +36,7 @@ const getYouTubeEmbedUrl = (url: string): string => {
   else if (url.includes('youtube.com/embed/')) {
     return url;
   }
-  
+
   return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
 };
 
@@ -102,7 +104,20 @@ const ContentDetails: React.FC = () => {
         console.error('Error fetching lecture from Contentful:', err);
       }
 
-      // Content not found
+      // Try Contentful (book)
+      try {
+        const book = await getBookById(id, 'ar');
+        if (book) {
+          const contentItem = bookToContentItem(book, 0);
+          setItem(contentItem);
+          setRelatedItems([]);
+          setLoading(false);
+          window.scrollTo(0, 0);
+          return;
+        }
+      } catch (err) {
+        console.error('Error fetching book from Contentful:', err);
+      }
       setItem(undefined);
       setLoading(false);
       window.scrollTo(0, 0);
@@ -147,7 +162,7 @@ const ContentDetails: React.FC = () => {
         <Link to="/" className="hover:text-amber-600">الرئيسية</Link>
         <span>/</span>
         <Link to={item.type === 'Book' ? '/books' : '/doros'} className="hover:text-amber-600">
-           {item.type === 'Book' ? 'المكتبة' : item.type === 'Lesson' ? 'الدروس' : 'المحتوى'}
+          {item.type === 'Book' ? 'المكتبة' : item.type === 'Lesson' ? 'الدروس' : 'المحتوى'}
         </Link>
         <span>/</span>
         <span className="text-gray-800 dark:text-gray-200 font-medium truncate max-w-[200px]">{item.title}</span>
@@ -172,14 +187,14 @@ const ContentDetails: React.FC = () => {
               </div>
             ) : (
               <>
-                <img 
-                  src={item.imageUrl} 
-                  alt={item.title} 
+                <img
+                  src={item.imageUrl}
+                  alt={item.title}
                   className="w-full h-auto max-h-[500px] object-cover"
                 />
                 {(item.type === 'Lesson' || item.type === 'Lecture' || item.type === 'Speech') && (
                   <div className="absolute inset-0 bg-black/30 flex items-center justify-center group-hover:bg-black/40 transition-colors">
-                     <button 
+                    <button
                       onClick={handlePlay}
                       className="w-20 h-20 bg-amber-600 hover:bg-amber-700 text-white rounded-full flex items-center justify-center shadow-2xl transform hover:scale-110 transition-all"
                     >
@@ -222,7 +237,7 @@ const ContentDetails: React.FC = () => {
           {/* Action Buttons */}
           <div className="mt-10 flex flex-wrap gap-4 pt-8 border-t border-gray-100 dark:border-gray-800">
             {item.type === 'Book' && (
-              <button 
+              <button
                 onClick={() => setShowPreview(true)}
                 className="bg-gray-800 dark:bg-gray-700 text-white px-6 py-3 rounded-lg font-bold flex items-center hover:bg-gray-900 dark:hover:bg-gray-600 transition-colors"
               >
@@ -230,19 +245,18 @@ const ContentDetails: React.FC = () => {
                 معاينة الكتاب
               </button>
             )}
-            
+
             <button className="bg-amber-600 text-white px-6 py-3 rounded-lg font-bold flex items-center hover:bg-amber-700 transition-colors shadow-lg shadow-amber-600/20">
               <Download size={20} className="ml-2" />
               تحميل {item.type === 'Book' ? 'الكتاب (PDF)' : 'الملف (MP3)'}
             </button>
-            
-            <button 
+
+            <button
               onClick={() => toggleFavorite(item.id)}
-              className={`px-6 py-3 rounded-lg font-bold flex items-center border transition-colors ${
-                favorited 
-                  ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-900 text-red-600 dark:text-red-400' 
-                  : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50'
-              }`}
+              className={`px-6 py-3 rounded-lg font-bold flex items-center border transition-colors ${favorited
+                ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-900 text-red-600 dark:text-red-400'
+                : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50'
+                }`}
             >
               <Heart size={20} className={`ml-2 ${favorited ? 'fill-current' : ''}`} />
               {favorited ? 'في المفضلة' : 'إضافة للمفضلة'}
@@ -260,7 +274,7 @@ const ContentDetails: React.FC = () => {
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20 text-gray-700 dark:text-gray-300 hover:text-green-600 transition-colors text-sm"
                 >
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.702-1.229A11.953 11.953 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.239 0-4.308-.724-5.993-1.953l-.42-.305-2.793.73.75-2.735-.332-.443A9.96 9.96 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" /><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.702-1.229A11.953 11.953 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.239 0-4.308-.724-5.993-1.953l-.42-.305-2.793.73.75-2.735-.332-.443A9.96 9.96 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z" /></svg>
                   واتساب
                 </a>
                 <a
@@ -269,7 +283,7 @@ const ContentDetails: React.FC = () => {
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 text-gray-700 dark:text-gray-300 hover:text-blue-500 transition-colors text-sm"
                 >
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
                   X (تويتر)
                 </a>
                 <a
@@ -278,7 +292,7 @@ const ContentDetails: React.FC = () => {
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 text-gray-700 dark:text-gray-300 hover:text-blue-600 transition-colors text-sm"
                 >
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.236 2.686.236v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.236 2.686.236v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" /></svg>
                   فيسبوك
                 </a>
                 <button
@@ -301,18 +315,18 @@ const ContentDetails: React.FC = () => {
         <div className="lg:col-span-1 space-y-8">
           {/* Author Card */}
           <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-             <div className="flex items-center gap-4 mb-4">
-               <div className="w-16 h-16 rounded-full bg-amber-600 flex items-center justify-center">
-                 <BookOpen size={28} className="text-white" />
-               </div>
-               <div>
-                 <h3 className="font-bold text-gray-900 dark:text-white">الشيخ محمد بن صالح بابحر</h3>
-                 <p className="text-sm text-gray-500 dark:text-gray-400">رحمه الله</p>
-               </div>
-             </div>
-             <Link to="/cv" className="block w-full text-center py-2 border border-amber-600 text-amber-600 dark:text-amber-500 rounded-lg hover:bg-amber-50 dark:hover:bg-amber-900/20 text-sm font-bold transition-colors">
-               السيرة الذاتية
-             </Link>
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-16 h-16 rounded-full bg-amber-600 flex items-center justify-center">
+                <BookOpen size={28} className="text-white" />
+              </div>
+              <div>
+                <h3 className="font-bold text-gray-900 dark:text-white">الشيخ محمد بن صالح بابحر</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400">رحمه الله</p>
+              </div>
+            </div>
+            <Link to="/cv" className="block w-full text-center py-2 border border-amber-600 text-amber-600 dark:text-amber-500 rounded-lg hover:bg-amber-50 dark:hover:bg-amber-900/20 text-sm font-bold transition-colors">
+              السيرة الذاتية
+            </Link>
           </div>
 
           {/* Related Content */}
@@ -337,10 +351,10 @@ const ContentDetails: React.FC = () => {
       </div>
 
       {item.type === 'Book' && (
-        <BookPreviewModal 
-          isOpen={showPreview} 
-          onClose={() => setShowPreview(false)} 
-          book={item} 
+        <BookPreviewModal
+          isOpen={showPreview}
+          onClose={() => setShowPreview(false)}
+          book={item}
         />
       )}
     </div>
