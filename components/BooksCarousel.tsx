@@ -31,10 +31,10 @@ const BooksCarousel: React.FC<BooksCarouselProps> = ({ books }) => {
 
             <div className="relative flex overflow-x-hidden group pb-12">
                 <div className="flex animate-scroll-loop gap-8 px-4 min-w-full">
-                    {/* First set */}
-                    {books.map((book, index) => (
+                    {/* First set (duplicated enough to fill screen) */}
+                    {[...books, ...books, ...books, ...books].map((book, index) => (
                         <Link
-                            key={`b1-${book.sys?.id || index}`}
+                            key={`b1-${book.sys?.id || index}-${index}`} // Unique key
                             to={`/content/${book.sys?.id}`}
                             className="flex flex-col items-center justify-center min-w-[160px] w-[160px] group/book hover:-translate-y-2 transition-transform duration-300"
                         >
@@ -65,10 +65,10 @@ const BooksCarousel: React.FC<BooksCarouselProps> = ({ books }) => {
                         </Link>
                     ))}
 
-                    {/* Duplicate set for seamless loop */}
-                    {books.map((book, index) => (
+                    {/* Second set (identical for seamless loop) */}
+                    {[...books, ...books, ...books, ...books].map((book, index) => (
                         <Link
-                            key={`b2-${book.sys?.id || index}`}
+                            key={`b2-${book.sys?.id || index}-${index}`} // Unique key
                             to={`/content/${book.sys?.id}`}
                             className="flex flex-col items-center justify-center min-w-[160px] w-[160px] group/book hover:-translate-y-2 transition-transform duration-300"
                         >
