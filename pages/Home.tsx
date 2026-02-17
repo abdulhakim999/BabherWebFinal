@@ -183,8 +183,8 @@ const Home: React.FC = () => {
                 </div>
               </div>
             </div>
-            <div className="order-1 md:order-2 relative animate-scale-up delay-200">
-              <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500">
+            <div className="order-1 md:order-2 relative animate-scale-up delay-200 flex justify-center">
+              <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500 w-full max-w-sm md:max-w-xs">
                 <div className="aspect-[4/5] bg-gray-100 dark:bg-gray-800 relative">
                   <img
                     src="/images/الشيخ.png"
@@ -198,7 +198,7 @@ const Home: React.FC = () => {
                   </div>
                 </div>
               </div>
-              <div className="absolute -inset-4 border-2 border-amber-500/20 rounded-3xl -rotate-2 -z-10"></div>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-sm md:max-w-xs h-[105%] border-2 border-amber-500/20 rounded-3xl -rotate-2 -z-10"></div>
             </div>
           </div>
         </div>
