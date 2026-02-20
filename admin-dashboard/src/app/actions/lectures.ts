@@ -22,10 +22,11 @@ export async function saveLecture(id: string | undefined, data: any) {
         if (id) {
             entry = await env.getEntry(id);
             entry.fields = { ...entry.fields, ...fields };
-            await entry.update();
+            entry = await entry.update();
         } else {
             entry = await env.createEntry("lectures", { fields });
         }
+        await entry.publish();
         revalidatePath("/dashboard/lectures");
         return { success: true, id: entry.sys.id };
     } catch (e: any) {
