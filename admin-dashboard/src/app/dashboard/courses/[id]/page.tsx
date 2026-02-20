@@ -3,8 +3,9 @@ import { getEntry } from "@/app/actions/contentful";
 export const dynamic = "force-dynamic";
 import { CourseForm } from "@/components/course-form";
 
-export default async function EditCoursePage({ params }: { params: { id: string } }) {
-    const entry = await getEntry(params.id);
+export default async function EditCoursePage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
+    const entry = await getEntry(id);
     const locale = process.env.CONTENTFUL_LOCALE_DEFAULT || "ar";
 
     const initialData = {
