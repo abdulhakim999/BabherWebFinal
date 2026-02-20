@@ -14,7 +14,7 @@ export async function saveBook(id: string | undefined, data: any) {
     if (data.description) fields.description = { [locale]: data.description };
     if (data.tag) fields.tag = { [locale]: data.tag };
     if (data.date) fields.date = { [locale]: new Date(data.date).toISOString() };
-    if (data.bookURL) fields.bookURL = { [locale]: data.bookURL };
+    if (data.bookUrl) fields.bookUrl = { [locale]: data.bookUrl };
     if (data.image) fields.image = { [locale]: { sys: { type: "Link", linkType: "Asset", id: data.image } } };
 
     try {

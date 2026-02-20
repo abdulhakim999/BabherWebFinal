@@ -20,7 +20,7 @@ const bookSchema = z.object({
     description: z.string().optional(),
     tag: z.string().optional(),
     date: z.string().optional(),
-    bookURL: z.string().url("رابط غير صحيح").or(z.literal("")).optional(),
+    bookUrl: z.string().url("رابط غير صحيح").or(z.literal("")).optional(),
     image: z.string().optional(),
 });
 
@@ -35,7 +35,7 @@ export function BookForm({ initialData }: { initialData?: any }) {
         description: initialData?.description || "",
         tag: initialData?.tag || "",
         date: initialData?.date ? new Date(initialData.date).toISOString().slice(0, 16) : "",
-        bookURL: initialData?.bookURL || "",
+        bookUrl: initialData?.bookUrl || "",
         image: initialData?.image || "",
     };
 
@@ -96,10 +96,10 @@ export function BookForm({ initialData }: { initialData?: any }) {
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="bookURL">رابط الكتاب (URL)</Label>
-                    <Input id="bookURL" type="url" {...form.register("bookURL")} disabled={isPending} placeholder="https://..." dir="ltr" />
-                    {form.formState.errors.bookURL && (
-                        <p className="text-sm text-destructive">{form.formState.errors.bookURL.message}</p>
+                    <Label htmlFor="bookUrl">رابط الكتاب (URL)</Label>
+                    <Input id="bookUrl" type="url" {...form.register("bookUrl")} disabled={isPending} placeholder="https://..." dir="ltr" />
+                    {form.formState.errors.bookUrl && (
+                        <p className="text-sm text-destructive">{form.formState.errors.bookUrl.message}</p>
                     )}
                 </div>
 

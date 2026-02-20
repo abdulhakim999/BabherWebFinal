@@ -20,7 +20,7 @@ const lectureSchema = z.object({
     description: z.string().optional(),
     tag: z.string().optional(),
     date: z.string().optional(),
-    videoURL: z.string().url("رابط غير صحيح").or(z.literal("")).optional(),
+    videoUrl: z.string().url("رابط غير صحيح").or(z.literal("")).optional(),
     image1: z.string().optional(),
 });
 
@@ -35,7 +35,7 @@ export function LectureForm({ initialData }: { initialData?: any }) {
         description: initialData?.description || "",
         tag: initialData?.tag || "",
         date: initialData?.date ? new Date(initialData.date).toISOString().slice(0, 16) : "",
-        videoURL: initialData?.videoURL || "",
+        videoUrl: initialData?.videoUrl || "",
         image1: initialData?.image1 || "",
     };
 
@@ -96,10 +96,10 @@ export function LectureForm({ initialData }: { initialData?: any }) {
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="videoURL">رابط الفيديو (URL)</Label>
-                    <Input id="videoURL" type="url" {...form.register("videoURL")} disabled={isPending} placeholder="https://..." dir="ltr" />
-                    {form.formState.errors.videoURL && (
-                        <p className="text-sm text-destructive">{form.formState.errors.videoURL.message}</p>
+                    <Label htmlFor="videoUrl">رابط الفيديو (URL)</Label>
+                    <Input id="videoUrl" type="url" {...form.register("videoUrl")} disabled={isPending} placeholder="https://..." dir="ltr" />
+                    {form.formState.errors.videoUrl && (
+                        <p className="text-sm text-destructive">{form.formState.errors.videoUrl.message}</p>
                     )}
                 </div>
 

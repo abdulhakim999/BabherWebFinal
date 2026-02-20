@@ -14,7 +14,7 @@ export async function saveCourse(id: string | undefined, data: any) {
     if (data.description) fields.description = { [locale]: data.description };
     if (data.tag) fields.tag = { [locale]: data.tag };
     if (data.date) fields.date = { [locale]: new Date(data.date).toISOString() };
-    if (data.videoURL) fields.videoURL = { [locale]: data.videoURL };
+    if (data.videoUrl) fields.videoUrl = { [locale]: data.videoUrl };
     if (data.image) fields.image = { [locale]: { sys: { type: "Link", linkType: "Asset", id: data.image } } };
 
     try {
