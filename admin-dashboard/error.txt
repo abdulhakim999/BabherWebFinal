@@ -1,0 +1,26 @@
+{
+  "status": 400,
+  "statusText": "",
+  "message": "The query you sent was invalid. Probably a filter or ordering specification is not applicable to the type of a field.",
+  "details": {
+    "errors": [
+      {
+        "name": "unknownContentType",
+        "value": "DOESNOTEXIST"
+      }
+    ]
+  },
+  "request": {
+    "url": "/spaces/z8102ynp2ny2/environments/master/entries",
+    "headers": {
+      "Accept": "application/json, text/plain, */*",
+      "Content-Type": "application/vnd.contentful.management.v1+json",
+      "X-Contentful-User-Agent": "sdk contentful-management.js/0.0.0-determined-by-semantic-release; platform node.js/v24.12.0; os Windows/v24.12.0;",
+      "Authorization": "Bearer ...6qWZ0",
+      "User-Agent": "axios/1.13.5",
+      "Accept-Encoding": "gzip, compress, deflate, br"
+    },
+    "method": "get"
+  },
+  "requestId": "164f8fe1-c1fb-406e-81c0-e8b50f1e9853"
+}

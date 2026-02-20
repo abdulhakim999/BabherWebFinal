@@ -1,0 +1,91 @@
+"use client";
+
+import { useTransition } from "react";
+import { MoreHorizontal, Edit, Trash2, Eye, EyeOff } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { deleteEntry, togglePublish } from "@/app/actions/contentful";
+import { toast } from "sonner";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+interface ContentRowActionsProps {
+    id: string;
+    isPublished: boolean;
+    editUrl: string;
+    revalidatePath: string;
+}
+
+export function ContentRowActions({
+    id,
+    isPublished,
+    editUrl,
+    revalidatePath,
+}: ContentRowActionsProps) {
+    const [isPending, startTransition] = useTransition();
+    const router = useRouter();
+
+    const handlePublishToggle = () => {
+        startTransition(async () => {
+            const res = await togglePublish(id, isPublished, revalidatePath);
+            if (res.error) toast.error("حدث خطأ", { description: res.error });
+            else toast.success(isPublished ? "تم إلغاء النشر" : "تم النشر بنجاح");
+            router.refresh();
+        });
+    };
+
+    const handleDelete = () => {
+        if (!confirm("هل أنت متأكد من الحذف؟")) return;
+        startTransition(async () => {
+            const res = await deleteEntry(id, revalidatePath);
+            if (res.error) toast.error("خطأ في الحذف", { description: res.error });
+            else toast.success("تم الحذف بنجاح");
+            router.refresh();
+        });
+    };
+
+    return (
+        <DropdownMenu dir="rtl">
+            <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0" disabled={isPending}>
+                    <span className="sr-only">فتح القائمة</span>
+                    <MoreHorizontal className="h-4 w-4" />
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+                <DropdownMenuLabel>الإجراءات</DropdownMenuLabel>
+                <DropdownMenuItem asChild>
+                    <Link href={editUrl} className="cursor-pointer">
+                        <Edit className="mr-2 h-4 w-4 ml-2" />
+                        تعديل
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handlePublishToggle} className="cursor-pointer">
+                    {isPublished ? (
+                        <>
+                            <EyeOff className="mr-2 h-4 w-4 ml-2" />
+                            إلغاء النشر (مسودة)
+                        </>
+                    ) : (
+                        <>
+                            <Eye className="mr-2 h-4 w-4 ml-2" />
+                            نشر
+                        </>
+                    )}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleDelete} className="text-destructive cursor-pointer">
+                    <Trash2 className="mr-2 h-4 w-4 ml-2" />
+                    حذف
+                </DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenu>
+    );
+}
