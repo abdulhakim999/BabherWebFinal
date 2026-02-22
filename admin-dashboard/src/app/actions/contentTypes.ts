@@ -88,7 +88,7 @@ export async function getDynamicEntries(contentTypeId: string) {
         });
 
         // Enhance entries with publication status
-        const enrichedEntries = entries.items.map(entry => {
+        const enrichedEntries = entries.items.map((entry: any) => {
             const isDraft = !entry.sys.publishedVersion;
             const isChanged = entry.sys.publishedVersion && entry.sys.version > entry.sys.publishedVersion + 1;
 
