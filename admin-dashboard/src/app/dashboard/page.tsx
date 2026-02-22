@@ -2,7 +2,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 export const dynamic = "force-dynamic";
 import { getEnvironment } from "@/lib/contentful";
-import { Book, LibraryBig, Video, ImageIcon } from "lucide-react";
+import { Book, LibraryBig, Video, ImageIcon, PlusCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 
 async function getStats() {
 
@@ -37,8 +47,38 @@ export default async function DashboardPage() {
 
     return (
         <div className="flex flex-col gap-6">
-            <div className="flex items-center">
+            <div className="flex items-center justify-between">
                 <h1 className="text-lg font-semibold md:text-2xl">نظرة عامة</h1>
+                <DropdownMenu dir="rtl">
+                    <DropdownMenuTrigger asChild>
+                        <Button className="gap-2">
+                            <PlusCircle className="h-4 w-4" />
+                            <span>إضافة جديد</span>
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>ماذا تريد أن تضيف؟</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem asChild className="cursor-pointer">
+                            <Link href="/dashboard/books/new" className="flex items-center">
+                                <Book className="ml-2 h-4 w-4" />
+                                <span>إضافة كتاب</span>
+                            </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild className="cursor-pointer">
+                            <Link href="/dashboard/courses/new" className="flex items-center">
+                                <LibraryBig className="ml-2 h-4 w-4" />
+                                <span>إضافة دورة/درس</span>
+                            </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild className="cursor-pointer">
+                            <Link href="/dashboard/lectures/new" className="flex items-center">
+                                <Video className="ml-2 h-4 w-4" />
+                                <span>إضافة محاضرة</span>
+                            </Link>
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
             </div>
 
             {error ? (
