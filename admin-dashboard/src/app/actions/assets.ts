@@ -18,23 +18,22 @@ export async function uploadAsset(formData: FormData) {
         const file = formData.get("file") as File;
         if (!file) throw new Error("لم يتم تحديد ملف");
 
-        const locale = process.env.CONTENTFUL_LOCALE_DEFAULT || "ar";
         const env = await getEnvironment();
 
         const arrayBuffer = await file.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
 
+        const createI18nField = (val: any) => ({ 'ar': val, 'en-US': val });
+
         let asset = await env.createAssetFromFiles({
             fields: {
-                title: { [locale]: file.name },
-                description: { [locale]: "تم الرفع من لوحة التحكم" },
-                file: {
-                    [locale]: {
-                        contentType: file.type,
-                        fileName: file.name,
-                        file: buffer as any, // contentful-management accepts Buffer
-                    },
-                },
+                title: createI18nField(file.name),
+                description: createI18nField("تم الرفع من لوحة التحكم"),
+                file: createI18nField({
+                    contentType: file.type,
+                    fileName: file.name,
+                    file: buffer as any, // contentful-management accepts Buffer
+                }),
             },
         });
 
@@ -49,7 +48,19 @@ export async function uploadAsset(formData: FormData) {
         return { success: true, id: asset.sys.id };
     } catch (e: any) {
         console.error("Upload Asset Error:", e);
-        return { error: e.message };
+        let errorMsg = "حدث خطأ غير معروف في الرفع";
+        if (e.message) {
+            try {
+                const parsed = JSON.parse(e.message);
+                if (parsed.message) errorMsg = parsed.message;
+                if (parsed.details && parsed.details.errors) {
+                    errorMsg += " - " + parsed.details.errors.map((err: any) => err.details || err.name).join(", ");
+                }
+            } catch {
+                errorMsg = e.message;
+            }
+        }
+        return { error: errorMsg };
     }
 }
 
