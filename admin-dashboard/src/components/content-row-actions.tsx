@@ -45,20 +45,30 @@ export function ContentRowActions({
 
     const handlePublishToggle = () => {
         startTransition(async () => {
-            const res = await togglePublish(id, isPublished, revalidatePath);
-            if (res.error) toast.error("حدث خطأ", { description: res.error });
-            else toast.success(isPublished ? "تم إلغاء النشر" : "تم النشر بنجاح");
-            router.refresh();
+            try {
+                const res = await togglePublish(id, isPublished, revalidatePath);
+                if (res.error) toast.error("حدث خطأ", { description: res.error });
+                else toast.success(isPublished ? "تم إلغاء النشر" : "تم النشر بنجاح");
+                router.refresh();
+            } catch (err) {
+                console.error("Publish error:", err);
+                toast.error("حدث خطأ غير متوقع", { description: "تعذر الاتصال بالخادم، يرجى المحاولة لاحقاً." });
+            }
         });
     };
 
     const handleDelete = () => {
         startTransition(async () => {
-            const res = await deleteEntry(id, revalidatePath);
-            if (res.error) toast.error("خطأ في الحذف", { description: res.error });
-            else toast.success("تم الحذف بنجاح");
-            setShowDeleteAlert(false);
-            router.refresh();
+            try {
+                const res = await deleteEntry(id, revalidatePath);
+                if (res.error) toast.error("خطأ في الحذف", { description: res.error });
+                else toast.success("تم الحذف بنجاح");
+                setShowDeleteAlert(false);
+                router.refresh();
+            } catch (err) {
+                console.error("Delete error:", err);
+                toast.error("حدث خطأ غير متوقع", { description: "تعذر الاتصال بالخادم، يرجى المحاولة لاحقاً." });
+            }
         });
     };
 
