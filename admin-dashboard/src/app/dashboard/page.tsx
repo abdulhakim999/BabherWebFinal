@@ -79,7 +79,7 @@ export default async function DashboardPage() {
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild className="cursor-pointer">
-                            <Link href="/dashboard/fatwas/new" className="flex items-center">
+                            <Link href="/dashboard/content/fatawa/new" className="flex items-center">
                                 <HelpCircle className="ml-2 h-4 w-4" />
                                 <span>إضافة فتوى</span>
                             </Link>

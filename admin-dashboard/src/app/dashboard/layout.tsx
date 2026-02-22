@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Book, LayoutDashboard, Settings, Video, Image as ImageIcon, LibraryBig, LogOut, Layers } from "lucide-react";
+import { Book, LayoutDashboard, Settings, Video, Image as ImageIcon, LibraryBig, LogOut, Layers, HelpCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { logOut } from "@/app/actions/auth";
@@ -9,6 +9,7 @@ const navItems = [
     { href: "/dashboard/books", icon: Book, label: "الكتب" },
     { href: "/dashboard/courses", icon: LibraryBig, label: "الدورات" },
     { href: "/dashboard/lectures", icon: Video, label: "المحاضرات" },
+    { href: "/dashboard/content/fatawa", icon: HelpCircle, label: "الفتاوى" },
     { href: "/dashboard/media", icon: ImageIcon, label: "مكتبة الوسائط" },
     { href: "/dashboard/content", icon: Layers, label: "أقسام المحتوى (متقدم)" },
 ];
