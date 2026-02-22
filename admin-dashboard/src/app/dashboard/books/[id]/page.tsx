@@ -14,7 +14,7 @@ export default async function EditBookPage({ params }: { params: Promise<{ id: s
         description: entry.fields.description?.[locale] || "",
         tag: entry.fields.tag?.[locale] || "",
         date: entry.fields.date?.[locale] || "",
-        bookURL: entry.fields.bookURL?.[locale] || "",
+        bookUrl: entry.fields.bookUrl?.[locale] || "",
         image: entry.fields.image?.[locale]?.sys?.id || "",
     };
 

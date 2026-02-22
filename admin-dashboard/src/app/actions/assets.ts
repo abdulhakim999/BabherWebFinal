@@ -56,15 +56,24 @@ export async function uploadAsset(formData: FormData) {
 export async function deleteAsset(id: string) {
     const env = await getEnvironment();
     try {
-        const asset = await env.getAsset(id);
+        let asset = await env.getAsset(id);
         if (asset.isPublished()) {
-            await asset.unpublish();
+            asset = await asset.unpublish();
         }
         await asset.delete();
         revalidatePath("/dashboard/media");
         return { success: true };
     } catch (e: any) {
-        console.error("Delete Asset Error", e.message);
-        return { error: e.message };
+        console.error("Delete Asset Error", e);
+        let errorMsg = "حدث خطأ غير معروف في الحذف";
+        if (e.message) {
+            try {
+                const parsed = JSON.parse(e.message);
+                if (parsed.message) errorMsg = parsed.message;
+            } catch {
+                errorMsg = e.message;
+            }
+        }
+        return { error: errorMsg };
     }
 }

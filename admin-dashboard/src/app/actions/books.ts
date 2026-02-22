@@ -5,17 +5,17 @@ import { revalidatePath } from "next/cache";
 
 export async function saveBook(id: string | undefined, data: any) {
     const env = await getEnvironment();
-    const locale = process.env.CONTENTFUL_LOCALE_DEFAULT || "ar";
+    const createI18nField = (val: any) => ({ 'ar': val, 'en-US': val });
 
     const fields: Record<string, any> = {
-        title: { [locale]: data.title },
+        title: createI18nField(data.title),
     };
 
-    if (data.description) fields.description = { [locale]: data.description };
-    if (data.tag) fields.tag = { [locale]: data.tag };
-    if (data.date) fields.date = { [locale]: new Date(data.date).toISOString() };
-    if (data.bookUrl) fields.bookUrl = { [locale]: data.bookUrl };
-    if (data.image) fields.image = { [locale]: { sys: { type: "Link", linkType: "Asset", id: data.image } } };
+    if (data.description) fields.description = createI18nField(data.description);
+    if (data.tag) fields.tag = createI18nField(data.tag);
+    if (data.date) fields.date = createI18nField(new Date(data.date).toISOString());
+    if (data.bookUrl) fields.bookUrl = createI18nField(data.bookUrl);
+    if (data.image) fields.image = createI18nField({ sys: { type: "Link", linkType: "Asset", id: data.image } });
 
     try {
         let entry;
@@ -31,6 +31,18 @@ export async function saveBook(id: string | undefined, data: any) {
         return { success: true, id: entry.sys.id };
     } catch (e: any) {
         console.error("Save Book Error:", e);
-        return { error: e.message };
+        let errorMsg = "حدث خطأ غير معروف";
+        if (e.message) {
+            try {
+                const parsed = JSON.parse(e.message);
+                if (parsed.message) errorMsg = parsed.message;
+                if (parsed.details && parsed.details.errors) {
+                    errorMsg += " - " + parsed.details.errors.map((err: any) => err.details || err.name).join(", ");
+                }
+            } catch {
+                errorMsg = e.message;
+            }
+        }
+        return { error: errorMsg };
     }
 }

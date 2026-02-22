@@ -56,6 +56,7 @@ export default async function MediaPage() {
                             <Card key={asset.id} className="overflow-hidden relative group">
                                 <div className="absolute top-2 left-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
                                     <form action={async () => {
+                                        "use server";
                                         await deleteAsset(asset.id);
                                     }}>
                                         <Button variant="destructive" size="icon" className="h-7 w-7">

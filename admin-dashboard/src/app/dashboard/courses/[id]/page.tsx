@@ -14,7 +14,8 @@ export default async function EditCoursePage({ params }: { params: Promise<{ id:
         description: entry.fields.description?.[locale] || "",
         tag: entry.fields.tag?.[locale] || "",
         date: entry.fields.date?.[locale] || "",
-        videoURL: entry.fields.videoURL?.[locale] || "",
+        videoUrl: entry.fields.videoUrl?.[locale] || "",
+        image: entry.fields.image?.[locale]?.sys?.id || "",
     };
 
     return <CourseForm initialData={initialData} />;

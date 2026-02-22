@@ -14,7 +14,8 @@ export default async function EditLecturePage({ params }: { params: Promise<{ id
         description: entry.fields.description?.[locale] || "",
         tag: entry.fields.tag?.[locale] || "",
         date: entry.fields.date?.[locale] || "",
-        videoURL: entry.fields.videoURL?.[locale] || "",
+        videoUrl: entry.fields.videoUrl?.[locale] || "",
+        image1: entry.fields.image1?.[locale]?.sys?.id || "",
     };
 
     return <LectureForm initialData={initialData} />;

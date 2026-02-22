@@ -21,16 +21,25 @@ export async function getEntry(id: string) {
 export async function deleteEntry(id: string, pathToRevalidate: string) {
     const env = await getEnvironment();
     try {
-        const entry = await env.getEntry(id);
+        let entry = await env.getEntry(id);
         if (entry.isPublished()) {
-            await entry.unpublish();
+            entry = await entry.unpublish();
         }
         await entry.delete();
         revalidatePath(pathToRevalidate);
         return { success: true };
     } catch (e: any) {
-        console.error("Delete Error", e.message);
-        return { error: e.message };
+        console.error("Delete Error", e);
+        let errorMsg = "حدث خطأ غير معروف في الحذف";
+        if (e.message) {
+            try {
+                const parsed = JSON.parse(e.message);
+                if (parsed.message) errorMsg = parsed.message;
+            } catch {
+                errorMsg = e.message;
+            }
+        }
+        return { error: errorMsg };
     }
 }
 
@@ -46,7 +55,16 @@ export async function togglePublish(id: string, isPublished: boolean, pathToReva
         revalidatePath(pathToRevalidate);
         return { success: true };
     } catch (e: any) {
-        console.error("Publish Error", e.message);
-        return { error: e.message };
+        console.error("Publish Error", e);
+        let errorMsg = "حدث خطأ غير معروف في النشر";
+        if (e.message) {
+            try {
+                const parsed = JSON.parse(e.message);
+                if (parsed.message) errorMsg = parsed.message;
+            } catch {
+                errorMsg = e.message;
+            }
+        }
+        return { error: errorMsg };
     }
 }
