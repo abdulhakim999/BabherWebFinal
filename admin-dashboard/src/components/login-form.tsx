@@ -1,7 +1,6 @@
 "use client";
 
 import { useTransition } from "react";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -25,7 +24,6 @@ const loginSchema = z.object({
 });
 
 export function LoginForm() {
-    const router = useRouter();
     const [isPending, startTransition] = useTransition();
 
     const form = useForm<z.infer<typeof loginSchema>>({
@@ -48,10 +46,9 @@ export function LoginForm() {
                 toast.error("خطأ في تسجيل الدخول", {
                     description: result.error,
                 });
-            } else {
-                router.push("/dashboard");
-                router.refresh();
             }
+            // Note: If successful, `authenticate` throws a server-side redirect 
+            // which Next.js handles automatically. Do NOT manually router.push here.
         });
     }
 

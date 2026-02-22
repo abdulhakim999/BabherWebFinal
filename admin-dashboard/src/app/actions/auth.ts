@@ -5,7 +5,14 @@ import { AuthError } from "next-auth";
 
 export async function authenticate(formData: FormData) {
     try {
-        await signIn("credentials", formData);
+        const username = formData.get("username") as string;
+        const password = formData.get("password") as string;
+
+        await signIn("credentials", {
+            username,
+            password,
+            redirectTo: "/dashboard",
+        });
     } catch (error) {
         if (error instanceof AuthError) {
             switch (error.type) {
@@ -15,10 +22,11 @@ export async function authenticate(formData: FormData) {
                     return { error: "حدث خطأ غير معروف." };
             }
         }
+        // Rethrow NEXT_REDIRECT error
         throw error;
     }
 }
 
 export async function logOut() {
-    await signOut();
+    await signOut({ redirectTo: "/login" });
 }
