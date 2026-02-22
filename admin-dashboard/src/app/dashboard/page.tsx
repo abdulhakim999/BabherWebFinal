@@ -13,6 +13,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { CreateContentTypeModal } from "@/components/CreateContentTypeModal";
 
 async function getStats() {
 
@@ -83,6 +84,8 @@ export default async function DashboardPage() {
                                 <span>إضافة فتوى</span>
                             </Link>
                         </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <CreateContentTypeModal />
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
