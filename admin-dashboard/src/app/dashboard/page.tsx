@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 export const dynamic = "force-dynamic";
 import { getEnvironment } from "@/lib/contentful";
-import { Book, LibraryBig, Video, ImageIcon, PlusCircle } from "lucide-react";
+import { Book, LibraryBig, Video, ImageIcon, PlusCircle, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -75,6 +75,12 @@ export default async function DashboardPage() {
                             <Link href="/dashboard/lectures/new" className="flex items-center">
                                 <Video className="ml-2 h-4 w-4" />
                                 <span>إضافة محاضرة</span>
+                            </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild className="cursor-pointer">
+                            <Link href="/dashboard/fatwas/new" className="flex items-center">
+                                <HelpCircle className="ml-2 h-4 w-4" />
+                                <span>إضافة فتوى</span>
                             </Link>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
