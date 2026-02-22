@@ -46,21 +46,39 @@ export async function deleteEntry(id: string, pathToRevalidate: string) {
 export async function togglePublish(id: string, isPublished: boolean, pathToRevalidate: string) {
     const env = await getEnvironment();
     try {
-        const entry = await env.getEntry(id);
+        let entry = await env.getEntry(id);
         if (isPublished) {
             await entry.unpublish();
         } else {
+            // Auto-fill missing locales to prevent validation errors on older entries
+            let needsUpdate = false;
+            for (const key in entry.fields) {
+                const field = entry.fields[key];
+                if (field['ar'] !== undefined && field['en-US'] === undefined) {
+                    field['en-US'] = field['ar'];
+                    needsUpdate = true;
+                } else if (field['en-US'] !== undefined && field['ar'] === undefined) {
+                    field['ar'] = field['en-US'];
+                    needsUpdate = true;
+                }
+            }
+            if (needsUpdate) {
+                entry = await entry.update();
+            }
             await entry.publish();
         }
         revalidatePath(pathToRevalidate);
         return { success: true };
     } catch (e: any) {
-        console.error("Publish Error", e);
+        console.error("Publish Error:", e);
         let errorMsg = "حدث خطأ غير معروف في النشر";
         if (e.message) {
             try {
                 const parsed = JSON.parse(e.message);
                 if (parsed.message) errorMsg = parsed.message;
+                if (parsed.details && parsed.details.errors) {
+                    errorMsg += " - " + parsed.details.errors.map((err: any) => err.details || err.name).join(", ");
+                }
             } catch {
                 errorMsg = e.message;
             }
